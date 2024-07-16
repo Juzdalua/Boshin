@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 public class DisplayQuest : MonoBehaviour
 {
-    public QuestInventoryObject questInventory;
-    public GameObject questPrefab;
-    public GameObject questDetail;
-    public GameObject rewardPrefab;
-    public InventoryObject itemInventoryObject;
+    [SerializeField] private QuestInventoryObject questInventory;
+    [SerializeField] private GameObject questPrefab;
+    [SerializeField] private GameObject questDetail;
+    [SerializeField] private GameObject rewardPrefab;
+    [SerializeField] private InventoryObject itemInventoryObject;
     Transform questDetailRewards;
     private Dictionary<int, GameObject> questDisplayed = new Dictionary<int, GameObject>();
     private List<GameObject> questDetailDisplayed = new List<GameObject>();
@@ -47,12 +47,12 @@ public class DisplayQuest : MonoBehaviour
             if (!questDisplayed.ContainsKey(questInventory.GetOngoingQuests()[i]))
             {
                 GameObject obj = Instantiate(questPrefab, Vector3.zero, Quaternion.identity, transform);
-                obj.GetComponentInChildren<TextMeshProUGUI>().text = quest.title;
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = quest.Title;
 
-                obj.GetComponent<ObjectData>().SetId(quest.id);
+                obj.GetComponent<ObjectData>().SetId(quest.Id);
                 obj.GetComponent<ObjectData>().SetObjectType(ObjectType.Quest);
 
-                questDisplayed.Add(quest.id, obj);
+                questDisplayed.Add(quest.Id, obj);
                 obj.GetComponent<Button>().onClick.AddListener(() => ClickQuestDetail(obj));
             }
         }
@@ -81,17 +81,17 @@ public class DisplayQuest : MonoBehaviour
         int questId = questObject.GetComponent<ObjectData>().GetId();
         var quest = QuestManager.Instance.GetQuestByQuestId(questId);
 
-        questDetail.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = quest.desctiption;
+        questDetail.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = quest.Desctiption;
         ShowQuestDetail(true);
 
         // rewards
-        if (quest.rewards.Length > 0 && questDetailDisplayed.Count == 0)
+        if (quest.Rewards.Length > 0 && questDetailDisplayed.Count == 0)
         {
-            for (int i = 0; i < quest.rewards.Length; i++)
+            for (int i = 0; i < quest.Rewards.Length; i++)
             {
                 GameObject obj = Instantiate(rewardPrefab, Vector3.zero, Quaternion.identity, questDetailRewards.GetChild(1));
-                obj.transform.GetChild(0).GetComponent<Image>().sprite = itemInventoryObject.GetItemById(quest.rewards[i]).itemImage;
-                obj.GetComponentInChildren<TextMeshProUGUI>().text = quest.rewardAmount[i].ToString("n0");
+                obj.transform.GetChild(0).GetComponent<Image>().sprite = itemInventoryObject.GetItemById(quest.Rewards[i]).ItemImage;
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = quest.RewardAmount[i].ToString("n0");
                 questDetailDisplayed.Add(obj);
             }
         }

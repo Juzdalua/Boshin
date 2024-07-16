@@ -11,13 +11,17 @@ public enum PlayerWeaponType
 [CreateAssetMenu(fileName = "New Weapon Object", menuName = "Inventory System/Items/Weapon")]
 public class ItemWeaponObject : ItemObject
 {
-    public PlayerWeaponType weaponType;
-    public float atkBonus;
-    public float criRateBonus;
-    public float criDmgBonus;
+    [SerializeField] private PlayerWeaponType weaponType;
+    public PlayerWeaponType WeaponType => weaponType;
+    [SerializeField] private float atkBonus;
+    public float AtkBonus => atkBonus;
+    [SerializeField] private float criRateBonus;
+    public float CriRateBonus => criRateBonus;
+    [SerializeField] private float criDmgBonus;
+    public float CriDmgBonus => criDmgBonus;
     
     public void Awake()
     {
-        itemType = ItemType.Weapon;
+        ItemType = ItemType.Weapon;
     }
 }

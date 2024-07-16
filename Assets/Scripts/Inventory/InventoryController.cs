@@ -10,15 +10,15 @@ public class InventoryController : MonoBehaviour
     PlayableCharacter mainCharacter;
     PlayerInputManager _inputManager;
     GameObject inventoryUI;
-    public GameObject inventoryDetailUI;
-    public GameObject useItemUI;
-    public InventoryObject inventory;
+    [SerializeField] private GameObject inventoryDetailUI;
+    [SerializeField] private GameObject useItemUI;
+    [SerializeField] private InventoryObject inventory;
 
     private bool isUseInventory = false;
     int currentUseItemAmount;
 
     [Header("Audio")]
-    public AudioClip InventoryOpenAudioClip;
+    [SerializeField] private AudioClip InventoryOpenAudioClip;
 
     void Start()
     {
@@ -134,7 +134,7 @@ public class InventoryController : MonoBehaviour
                 if (item.amount == 0) useItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = new Color32(255, 255, 255, 80);
                 else useItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
 
-                useItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().sprite = item.item.itemImage;
+                useItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().sprite = item.item.ItemImage;
             }
         }
     }

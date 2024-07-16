@@ -8,12 +8,11 @@ using UnityEngine.Timeline;
 
 public class CutScene : MonoBehaviour
 {
-
     private GameObject player;
     private CutScene component;
 
     private PlayableDirector _pd;
-    public TimelineAsset[] _ta;
+    [SerializeField] private TimelineAsset[] _ta;
 
     void Start()
     {

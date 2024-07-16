@@ -8,7 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     GameObject player;
     PlayerInputManager _playerInputManager;
-    public DialogueManager _dialogueManager;
+    [SerializeField] private DialogueManager _dialogueManager;
 
     private float rotationSpeed = 100f;
 
@@ -19,15 +19,16 @@ public class PlayerInteraction : MonoBehaviour
     private bool isConversationNow = false;
 
     [Header("Camera")]
-    public CinemachineVirtualCamera playerCamera;
-    public CinemachineVirtualCamera[] virtualCameras;
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
+    public CinemachineVirtualCamera PlayerCamera => playerCamera;
+    [SerializeField] private CinemachineVirtualCamera[] virtualCameras;
 
     [Header("Show UI")]
-    public GameObject[] characterUIs;
+    [SerializeField] private GameObject[] characterUIs;
 
     [Header("Audio")]
-    public AudioClip PressFAudioClip;
-    public AudioClip OnPressFLootItemAudioClip;
+    [SerializeField] private AudioClip PressFAudioClip;
+    [SerializeField] private AudioClip OnPressFLootItemAudioClip;
 
     void Start()
     {

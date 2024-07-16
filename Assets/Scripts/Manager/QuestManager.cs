@@ -7,16 +7,18 @@ using UnityEngine;
 
 public class QuestManager : Singleton<QuestManager>
 {
-    public GameObject questUI;
-    public QuestDatabaseObject database;
-    public QuestInventoryObject questInventoryObject;
-    public InventoryObject itemInventory;
+    [SerializeField] private GameObject questUI;
+    [SerializeField] private QuestDatabaseObject database;
+    public QuestDatabaseObject Database => database;
+    [SerializeField] private QuestInventoryObject questInventoryObject;
+    public QuestInventoryObject QuestInventoryObject => questInventoryObject;
+    [SerializeField] private InventoryObject itemInventory;
 
     Transform questImageNotDoneTransform;
     Transform questImageDoneTransform;
     Transform questMessageTransform;
-    public AudioClip acceptQuestAudioClip;
-    public AudioClip doneQuestAudioClip;
+    [SerializeField] private AudioClip acceptQuestAudioClip;
+    [SerializeField] private AudioClip doneQuestAudioClip;
     Coroutine questUICoroutine;
 
     bool isSetup = false;
@@ -41,20 +43,20 @@ public class QuestManager : Singleton<QuestManager>
 
     private void OnApplicationQuit()
     {
-        database.quests.Clear();
+        database.Quests.Clear();
         questInventoryObject.Clear();
     }
 
     public void AcceptQuest(Quest quest)
     {
-        questInventoryObject.AddOngoingQuest(quest.id);
+        questInventoryObject.AddOngoingQuest(quest.Id);
         SetQuest(quest);
     }
 
     public void CancelQuest(Quest quest)
     {
-        questInventoryObject.CalcelQuest(quest.id);
-        DialogueManager.Instance.CancelQuestWithDialogue(quest.dialogueId);
+        questInventoryObject.CalcelQuest(quest.Id);
+        DialogueManager.Instance.CancelQuestWithDialogue(quest.DialogueId);
     }
 
     public void DoneQuest(Quest quest)
@@ -64,14 +66,14 @@ public class QuestManager : Singleton<QuestManager>
         questImageDoneTransform.GetComponent<CanvasGroup>().alpha = 1;
         questMessageTransform.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
 
-        questInventoryObject.AddDoneQuest(quest.id);
+        questInventoryObject.AddDoneQuest(quest.Id);
 
-        if (quest.rewards.Length > 0)
+        if (quest.Rewards.Length > 0)
         {
-            for (int i = 0; i < quest.rewards.Length; i++)
+            for (int i = 0; i < quest.Rewards.Length; i++)
             {
-                var reward = itemInventory.GetItemById(quest.rewards[i]);
-                itemInventory.AddItem(reward, quest.rewardAmount[i]);
+                var reward = itemInventory.GetItemById(quest.Rewards[i]);
+                itemInventory.AddItem(reward, quest.RewardAmount[i]);
             }
         }
         if (questUICoroutine != null) StopCoroutine(questUICoroutine);
@@ -80,7 +82,7 @@ public class QuestManager : Singleton<QuestManager>
 
     public Quest GetQuestByQuestId(int questId)
     {
-        return database.quests.Find(ele => ele.id == questId);
+        return database.Quests.Find(ele => ele.Id == questId);
     }
 
     public void SetQuest(Quest quest)
@@ -99,7 +101,7 @@ public class QuestManager : Singleton<QuestManager>
             questMessageTransform.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
 
             string questMessage;
-            if (quest.questType == QuestType.DefeatMonster) questMessage = SetDefeatMonsterQuestMessage(quest.GetTitle(), 0, quest.GetRequireAmount());
+            if (quest.QuestType == QuestType.DefeatMonster) questMessage = SetDefeatMonsterQuestMessage(quest.GetTitle(), 0, quest.GetRequireAmount());
             else questMessage = quest.GetTitle();
 
             questMessageTransform.GetComponent<TextMeshProUGUI>().text = questMessage;
@@ -121,13 +123,13 @@ public class QuestManager : Singleton<QuestManager>
         if (quest != null && !quest.GetIsCompleted())
         {
             // Defeat Monster
-            if (questType == QuestType.DefeatMonster && targetId != 0 && targetId == quest.targetId)
+            if (questType == QuestType.DefeatMonster && targetId != 0 && targetId == quest.TargetId)
             {
-                quest.currentAmount++;
-                string updateMessage = SetDefeatMonsterQuestMessage(quest.title, quest.currentAmount, quest.requireAmount);
+                quest.CurrentAmount++;
+                string updateMessage = SetDefeatMonsterQuestMessage(quest.Title, quest.CurrentAmount, quest.RequireAmount);
                 questMessageTransform.GetComponent<TextMeshProUGUI>().text = updateMessage;
 
-                if (quest.currentAmount >= quest.requireAmount)
+                if (quest.CurrentAmount >= quest.RequireAmount)
                 {
                     DoneQuest(quest);
                 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EventManager : Singleton<EventManager>
 {
-    public List<int> doneEventIds = new List<int>();
-    public List<int> doneTreasure = new List<int>();
+    [SerializeField] public List<int> doneEventIds = new List<int>();
+    [SerializeField] public List<int> doneTreasure = new List<int>();
 
     public void SetEventManager()
     {

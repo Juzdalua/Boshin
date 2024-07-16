@@ -10,20 +10,20 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
     PlayableCharacter mainCharacter;
 
     PlayerInputManager _inputManager;
-    public GameObject statUI;
-    public GameObject[] characterUis;
+    [SerializeField] private GameObject statUI;
+    [SerializeField] private GameObject[] characterUis;
 
     [Header("Character Swap")]
-    public GameObject[] characterButtons;
-    public GameObject[] characterModels;
+    [SerializeField] private GameObject[] characterButtons;
+    [SerializeField] private GameObject[] characterModels;
 
     [Header("Left Button Swap")]
-    public GameObject[] leftButtons;
-    public GameObject[] centerContents;
-    public GameObject[] rightContents;
+    [SerializeField] private GameObject[] leftButtons;
+    [SerializeField] private GameObject[] centerContents;
+    [SerializeField] private GameObject[] rightContents;
 
     [Header("01 - Character Detail Information")]
-    public GameObject playerStatDetailContainer;
+    [SerializeField] private GameObject playerStatDetailContainer;
     Transform nameContainer;
     Transform hpContainer;
     Transform atkContainer;
@@ -32,7 +32,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
     Transform criDmgContainer;
 
     [Header("02 - Character Weapon Information")]
-    public GameObject playerWeaponDetailContainer;
+    [SerializeField] private GameObject playerWeaponDetailContainer;
     Transform characterModelContainer;
     Transform weaponContainer;
     Transform weaponNameContainer;
@@ -41,18 +41,18 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
     Transform weaponCriDmgContainer;
 
     [Header("03 - Character Skill Information")]
-    public GameObject[] skillButtons;
+    [SerializeField] private GameObject[] skillButtons;
     Transform skillContainer;
 
     [Header("04 - Character Voice Information")]
-    public GameObject[] voiceButtons;
+    [SerializeField] private GameObject[] voiceButtons;
 
     float blendIdle;
-    public bool isUseStat;
+    [SerializeField] private bool isUseStat;
     List<int> characterButtonClickList = new List<int>();
 
     [Header("Audio")]
-    public AudioClip InventoryOpenAudioClip;
+    [SerializeField] private AudioClip InventoryOpenAudioClip;
 
     void Awake()
     {
@@ -115,7 +115,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
 
     public void SetCharacterStat()
     {
-        statUI.GetComponent<Image>().color = new Color32(mainCharacter.elementColor[0], mainCharacter.elementColor[1], mainCharacter.elementColor[2], 255);
+        statUI.GetComponent<Image>().color = new Color32(mainCharacter.ElementColor[0], mainCharacter.ElementColor[1], mainCharacter.ElementColor[2], 255);
 
         // 00 - Character Model
         int characterId = player.GetComponent<ObjectData>().GetId();
@@ -132,32 +132,32 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
         }
 
         // 01 - Character Info
-        nameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.characterName;
-        hpContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.maxHP.ToString("n0");
+        nameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.CharacterName;
+        hpContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.MaxHP.ToString("n0");
 
-        float atk = mainCharacter.atk;
-        if (mainCharacter.weapon != null) atk += mainCharacter.weapon.atkBonus;
+        float atk = mainCharacter.Atk;
+        if (mainCharacter.Weapon != null) atk += mainCharacter.Weapon.AtkBonus;
         atkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = atk.ToString("n0");
 
-        defContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.def.ToString("n0");
+        defContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Def.ToString("n0");
 
-        float criRate = mainCharacter.criRate * 100f;
-        if (mainCharacter.weapon != null) criRate += mainCharacter.weapon.criRateBonus * 100f;
+        float criRate = mainCharacter.CriRate * 100f;
+        if (mainCharacter.Weapon != null) criRate += mainCharacter.Weapon.CriRateBonus * 100f;
         criRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = criRate.ToString("n0") + "%";
 
-        float criDmg = mainCharacter.criDmg * 100f;
-        if (mainCharacter.weapon != null) criDmg += mainCharacter.weapon.criDmgBonus * 100f;
+        float criDmg = mainCharacter.CriDmg * 100f;
+        if (mainCharacter.Weapon != null) criDmg += mainCharacter.Weapon.CriDmgBonus * 100f;
         criDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = criDmg.ToString("n0") + "%";
 
         // 02-Weapon
-        weaponContainer.GetChild(1).GetComponentInChildren<Image>().sprite = mainCharacter.weapon.itemImage;
-        weaponNameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.weapon.itemName;
-        weaponAtkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.weapon.atkBonus.ToString("n0");
-        weaponCriRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.weapon.criRateBonus * 100f).ToString("n0") + "%";
-        weaponCriDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.weapon.criDmgBonus * 100f).ToString("n0") + "%";
+        weaponContainer.GetChild(1).GetComponentInChildren<Image>().sprite = mainCharacter.Weapon.ItemImage;
+        weaponNameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.Weapon.ItemName;
+        weaponAtkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Weapon.AtkBonus.ToString("n0");
+        weaponCriRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.Weapon.CriRateBonus * 100f).ToString("n0") + "%";
+        weaponCriDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.Weapon.CriDmgBonus * 100f).ToString("n0") + "%";
 
         // Prevent sound duplicate 
-        if (characterButtonClickList.FindIndex(characterId => characterId == mainCharacter.id) != -1) return;
+        if (characterButtonClickList.FindIndex(characterId => characterId == mainCharacter.Id) != -1) return;
 
         // 03-Skill
         for (int i = 0; i < skillButtons.Length; i++)
@@ -172,7 +172,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
             int buttonId = voiceButtons[i].GetComponent<ObjectData>().GetId();
             voiceButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickVoiceButton(buttonId));
         }
-        characterButtonClickList.Add(mainCharacter.id);
+        characterButtonClickList.Add(mainCharacter.Id);
     }
 
     // Todo- 클릭하면 sound 중복됨 
@@ -180,7 +180,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
     {
         OnInventoryOpenSound();
         mainCharacter = PlayerManager.Instance.GetPlayerById(characterId);
-        statUI.GetComponent<Image>().color = new Color32(mainCharacter.elementColor[0], mainCharacter.elementColor[1], mainCharacter.elementColor[2], 255);
+        statUI.GetComponent<Image>().color = new Color32(mainCharacter.ElementColor[0], mainCharacter.ElementColor[1], mainCharacter.ElementColor[2], 255);
 
         // 00 - Character Model
         for (int i = 0; i < characterModels.Length; i++)
@@ -196,34 +196,34 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
         }
 
         // 01-Info
-        nameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.characterName;
-        hpContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.maxHP.ToString("n0");
+        nameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.CharacterName;
+        hpContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.MaxHP.ToString("n0");
 
-        float atk = mainCharacter.atk;
-        if (mainCharacter.weapon != null) atk += mainCharacter.weapon.atkBonus;
+        float atk = mainCharacter.Atk;
+        if (mainCharacter.Weapon != null) atk += mainCharacter.Weapon.AtkBonus;
         atkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = atk.ToString("n0");
 
-        defContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.def.ToString("n0");
+        defContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Def.ToString("n0");
 
-        float criRate = mainCharacter.criRate * 100f;
-        if (mainCharacter.weapon != null) criRate += mainCharacter.weapon.criRateBonus * 100f;
+        float criRate = mainCharacter.CriRate * 100f;
+        if (mainCharacter.Weapon != null) criRate += mainCharacter.Weapon.CriRateBonus * 100f;
         criRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = criRate.ToString("n0") + "%";
 
-        float criDmg = mainCharacter.criDmg * 100f;
-        if (mainCharacter.weapon != null) criDmg += mainCharacter.weapon.criDmgBonus * 100f;
+        float criDmg = mainCharacter.CriDmg * 100f;
+        if (mainCharacter.Weapon != null) criDmg += mainCharacter.Weapon.CriDmgBonus * 100f;
         criDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = criDmg.ToString("n0") + "%";
 
         // 02-Weapon       
-        weaponContainer.GetChild(1).GetComponentInChildren<Image>().sprite = mainCharacter.weapon.itemImage;
-        weaponNameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.weapon.itemName;
-        weaponAtkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.weapon.atkBonus.ToString("n0");
-        weaponCriRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.weapon.criRateBonus * 100f).ToString("n0") + "%";
-        weaponCriDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.weapon.criDmgBonus * 100f).ToString("n0") + "%";
+        weaponContainer.GetChild(1).GetComponentInChildren<Image>().sprite = mainCharacter.Weapon.ItemImage;
+        weaponNameContainer.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.Weapon.ItemName;
+        weaponAtkContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Weapon.AtkBonus.ToString("n0");
+        weaponCriRateContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.Weapon.CriRateBonus * 100f).ToString("n0") + "%";
+        weaponCriDmgContainer.GetChild(1).GetComponent<TextMeshProUGUI>().text = (mainCharacter.Weapon.CriDmgBonus * 100f).ToString("n0") + "%";
 
         OnClickSkillButton(1, false);
 
         // Prevent sound duplicate 
-        if (characterButtonClickList.FindIndex(characterId => characterId == mainCharacter.id) != -1) return;
+        if (characterButtonClickList.FindIndex(characterId => characterId == mainCharacter.Id) != -1) return;
         
         // 03-Skill
         for (int i = 0; i < skillButtons.Length; i++)
@@ -238,7 +238,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
             int buttonId = voiceButtons[i].GetComponent<ObjectData>().GetId();
             voiceButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickVoiceButton(buttonId));
         }
-        characterButtonClickList.Add(mainCharacter.id);
+        characterButtonClickList.Add(mainCharacter.Id);
     }
 
     public void OnClickLeftButton(int buttonId)
@@ -283,31 +283,31 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
         if (isSoundOn) OnInventoryOpenSound();
         if (buttonId == 1)
         {
-            skillContainer.GetChild(0).GetComponent<Image>().sprite = mainCharacter.e_image;
-            skillContainer.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = mainCharacter.e_desctiption;
-            skillContainer.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.e_cooltime.ToString("n0") + "초";
-            skillContainer.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.e_gauge.ToString("n0");
+            skillContainer.GetChild(0).GetComponent<Image>().sprite = mainCharacter.E_image;
+            skillContainer.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = mainCharacter.E_desctiption;
+            skillContainer.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.E_cooltime.ToString("n0") + "초";
+            skillContainer.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.E_gauge.ToString("n0");
             skillContainer.GetChild(3).gameObject.SetActive(true);
             skillContainer.GetChild(4).gameObject.SetActive(false);
-            skillContainer.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.e_damage.ToString("n0");
+            skillContainer.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.E_damage.ToString("n0");
         }
         else if (buttonId == 2)
         {
-            skillContainer.GetChild(0).GetComponent<Image>().sprite = mainCharacter.q_image;
-            skillContainer.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = mainCharacter.q_desctiption;
-            skillContainer.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.q_cooltime.ToString("n0") + "초";
-            skillContainer.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.q_maxGauge.ToString("n0");
+            skillContainer.GetChild(0).GetComponent<Image>().sprite = mainCharacter.Q_image;
+            skillContainer.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = mainCharacter.Q_desctiption;
+            skillContainer.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Q_cooltime.ToString("n0") + "초";
+            skillContainer.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Q_maxGauge.ToString("n0");
             skillContainer.GetChild(3).gameObject.SetActive(false);
             skillContainer.GetChild(4).gameObject.SetActive(true);
-            skillContainer.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.q_damage.ToString("n0");
+            skillContainer.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = mainCharacter.Q_damage.ToString("n0");
         }
     }
 
     public void OnClickVoiceButton(int buttonId)
     {
         OnInventoryOpenSound();
-        if (buttonId < 4) SoundManager.Instance.SFXPlay(mainCharacter.e_audios[buttonId - 1].name, mainCharacter.e_audios[buttonId - 1]);
-        else SoundManager.Instance.SFXPlay(mainCharacter.q_audios[buttonId - 4].name, mainCharacter.q_audios[buttonId - 4]);
+        if (buttonId < 4) SoundManager.Instance.SFXPlay(mainCharacter.E_audios[buttonId - 1].name, mainCharacter.E_audios[buttonId - 1]);
+        else SoundManager.Instance.SFXPlay(mainCharacter.Q_audios[buttonId - 4].name, mainCharacter.Q_audios[buttonId - 4]);
     }
 
     // Open & Close Controller

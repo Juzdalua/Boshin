@@ -8,8 +8,8 @@ public class PlayerInteractUI : MonoBehaviour
 {
     GameObject player;
     PlayerInteraction playerInteraction;
-    public GameObject containerGameObject;
-    public TextMeshProUGUI interactTextMeshProUGUI;
+    [SerializeField] private GameObject containerGameObject;
+    [SerializeField] private TextMeshProUGUI interactTextMeshProUGUI;
 
     void Start()
     {

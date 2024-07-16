@@ -12,25 +12,25 @@ public class MenuManager : Singleton<MenuManager>
     GameObject menuUI;
 
     [Header("Left Menu Buttons")]
-    public GameObject[] menuButtons;
+    [SerializeField] private GameObject[] menuButtons;
 
     [Header("Right Menu Contents")]
-    public GameObject settingButton;
+    [SerializeField] private GameObject settingButton;
     Slider bgmSettingSlider;
     Slider sfxSettingSlider;
     TextMeshProUGUI bgmSettingValue;
     TextMeshProUGUI sfxSettingValue;
     float maxSoundVolume = 3f;
-    public GameObject keysButton;
+    [SerializeField] private GameObject keysButton;
 
     [Header("Data")]
-    public InventoryObject inventory;
-    public ItemDatabaseObject itemDatabase;
+    [SerializeField] private InventoryObject inventory;
+    [SerializeField] private ItemDatabaseObject itemDatabase;
 
     private bool isOpenMenu = false;
 
     [Header("Audio")]
-    public AudioClip MenuOpenAudioClip;
+    [SerializeField] private AudioClip MenuOpenAudioClip;
 
     void Start()
     {
@@ -189,16 +189,16 @@ public class MenuManager : Singleton<MenuManager>
     public void ResetGameData()
     {
         PlayerManager.Instance.SetPlayerManager();
-        PlayerManager.Instance.playerDatabase.SetPlayerDatabase();
+        PlayerManager.Instance.PlayerDatabase.SetPlayerDatabase();
         DialogueManager.Instance.SetDialogueManager();
         DialogueManager.Instance.database.SetDialogueDatabase();
-        QuestManager.Instance.questInventoryObject.SetQuestInventory();
-        QuestManager.Instance.database.SetQuestDatabase();
+        QuestManager.Instance.QuestInventoryObject.SetQuestInventory();
+        QuestManager.Instance.Database.SetQuestDatabase();
         inventory.SetItemInventory();
         itemDatabase.SetItemDatabase();
         EventManager.Instance.SetEventManager();
-        QuestManager.Instance.questInventoryObject.doneQuest.Clear();
-        QuestManager.Instance.questInventoryObject.ongoingQuest.Clear();
+        QuestManager.Instance.QuestInventoryObject.doneQuest.Clear();
+        QuestManager.Instance.QuestInventoryObject.ongoingQuest.Clear();
     }
 
     void CloseRightMenus()
@@ -214,11 +214,11 @@ public class MenuManager : Singleton<MenuManager>
         bgmSettingValue = settingButton.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
         sfxSettingValue = settingButton.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>();
 
-        SoundManager.Instance.bgmVolume = 1f;
-        SoundManager.Instance.sfxVolume = 1f;
+        SoundManager.Instance.BgmVolume = 1f;
+        SoundManager.Instance.SfxVolume = 1f;
 
-        bgmSettingSlider.value = SoundManager.Instance.bgmVolume;
-        sfxSettingSlider.value = SoundManager.Instance.sfxVolume;
+        bgmSettingSlider.value = SoundManager.Instance.BgmVolume;
+        sfxSettingSlider.value = SoundManager.Instance.SfxVolume;
         bgmSettingValue.text = bgmSettingSlider.value.ToString("n0");
         sfxSettingValue.text = sfxSettingSlider.value.ToString("n0");
     }
@@ -231,7 +231,7 @@ public class MenuManager : Singleton<MenuManager>
         bgmSettingValue.text = bgmSettingSlider.value.ToString("n0");
         sfxSettingValue.text = sfxSettingSlider.value.ToString("n0");
 
-        SoundManager.Instance.bgmVolume = bgmSettingSlider.value / maxSoundVolume;
-        SoundManager.Instance.sfxVolume = sfxSettingSlider.value / maxSoundVolume;
+        SoundManager.Instance.BgmVolume = bgmSettingSlider.value / maxSoundVolume;
+        SoundManager.Instance.SfxVolume = sfxSettingSlider.value / maxSoundVolume;
     }
 }

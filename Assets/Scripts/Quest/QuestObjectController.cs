@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class QuestObjectController : MonoBehaviour
 {
-    public int questId;
+    [SerializeField] private int questId;
+    public int QuestId => questId;
     private Quest quest;
     private int objectId;
     private ObjectType objectType;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PortalController : MonoBehaviour
 {
-    public AudioClip restoreHPClip;
+    [SerializeField] private AudioClip restoreHPClip;
     private float healTime = 0;
 
     private void OnTriggerEnter(Collider other)
@@ -39,10 +39,10 @@ public class PortalController : MonoBehaviour
             var players = PlayerManager.Instance.GetPartyPlayers();
             for (int i = 0; i < players.Count; i++)
             {
-                if (players[i].id == player.GetComponent<ObjectData>().GetId()) continue;
-                players[i].currentHP = players[i].maxHP;
+                if (players[i].Id == player.GetComponent<ObjectData>().GetId()) continue;
+                players[i].CurrentHP = players[i].MaxHP;
             }
-            PlayerManager.Instance._playerSwapController.SetPartyUI();
+            PlayerManager.Instance.PlayerSwapController.SetPartyUI();
         }
     }
 }

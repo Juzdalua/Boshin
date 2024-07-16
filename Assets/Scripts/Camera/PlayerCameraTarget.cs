@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCameraTarget : MonoBehaviour
 {
-    public GameObject cameraRoot;
+    [SerializeField] private GameObject cameraRoot;
     Quaternion tempTransform;
 
     void Update()

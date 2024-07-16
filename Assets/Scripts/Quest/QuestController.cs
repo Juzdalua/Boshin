@@ -7,12 +7,12 @@ public class QuestController : MonoBehaviour
     GameObject player;
     PlayerInputManager _inputManager;
     GameObject questUI;
-    public GameObject questDetailUI;
+    [SerializeField] private GameObject questDetailUI;
 
     private bool isUseQuestInventory = false;
 
     [Header("Audio")]
-    public AudioClip QuestOpenAudioClip;
+    [SerializeField] private AudioClip QuestOpenAudioClip;
 
     void Start()
     {

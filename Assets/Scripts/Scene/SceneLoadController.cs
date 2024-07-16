@@ -11,9 +11,9 @@ public enum SceneCheckMethod
 
 public class SceneLoadController : MonoBehaviour
 {
-    public Transform player;
-    public SceneCheckMethod checkMethod;
-    public float loadRange;
+    [SerializeField] private Transform player;
+    [SerializeField] private SceneCheckMethod checkMethod;
+    [SerializeField] private float loadRange;
 
     private float enterTime;
     private bool isLoaded; // 2번 로드 방지

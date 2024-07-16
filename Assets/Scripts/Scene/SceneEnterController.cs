@@ -6,15 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneEnterController : MonoBehaviour
 {
-    public AudioClip bgmClip;
-    public string villigeName;
-    public GameObject villigeUI;
+    [SerializeField] private AudioClip bgmClip;
+    [SerializeField] private string villigeName;
+    [SerializeField] private GameObject villigeUI;
 
     private CanvasGroup canvasGroup;
     private string currentVilligeName;
     private Coroutine SceneEnterCanvasCoroutine;
-    public float villigeNameRemainTime = 2f;
-    public string sceneName;
+    [SerializeField] private float villigeNameRemainTime = 2f;
+    [SerializeField] private string sceneName;
 
     void Awake()
     {

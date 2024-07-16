@@ -9,27 +9,33 @@ using UnityEngine.UI;
 
 public class PlayerSwapController : MonoBehaviour
 {
-    public GameObject[] players;
-    public GameObject partyUI;
+    [SerializeField] private GameObject[] players;
+    [SerializeField] private GameObject partyUI;
     List<PlayableCharacter> partyPlayers;
     int partyMemberLimit = 2;
 
-    public CinemachineVirtualCamera mainCinemachineCamera;
-    public CinemachineFreeLook qSkillCinemachineCamera;
+    [SerializeField] private CinemachineVirtualCamera mainCinemachineCamera;
+    [SerializeField] private CinemachineFreeLook qSkillCinemachineCamera;
 
     private PlayerInputManager _inputManager;
     private GameObject currentPlayer;
-    public int currentPlayerIndex = 0;
+    [SerializeField] private int currentPlayerIndex = 0;
 
     [Header("Camera")]
-    public Transform worldCameraRoot;
-    public Transform characterCameraRoot;
+    [SerializeField] private Transform worldCameraRoot;
+    [SerializeField] private Transform characterCameraRoot;
     private Transform skillCameraRoot;
-    public Vector3 tempCameraRoot;
-    public bool isSwap = false;
+    [SerializeField] private Vector3 tempCameraRoot;
+    public Vector3 TempCameraRoot => tempCameraRoot;
+    [SerializeField] private bool isSwap = false;
+    public bool IsSwap
+    {
+        get { return isSwap; }
+        set { isSwap = value; }
+    }
 
     [Header("Audio")]
-    public AudioClip playerSwapSound;
+    [SerializeField] private AudioClip playerSwapSound;
 
     void Start()
     {
@@ -63,7 +69,7 @@ public class PlayerSwapController : MonoBehaviour
     {
         if (swapKey > partyMemberLimit) return false;
 
-        if (PlayerManager.Instance.GetPartyPlayers()[swapKey - 1].currentHP <= 0)
+        if (PlayerManager.Instance.GetPartyPlayers()[swapKey - 1].CurrentHP <= 0)
         {
             _inputManager.swap = currentPlayerIndex + 1;
             return false;
@@ -144,7 +150,7 @@ public class PlayerSwapController : MonoBehaviour
 
         for (int i = 0; i < partyPlayers.Count; i++)
         {
-            if (currentPlayer.GetComponent<ObjectData>().GetId() == partyPlayers[i].id)
+            if (currentPlayer.GetComponent<ObjectData>().GetId() == partyPlayers[i].Id)
             {
                 partyUI.transform.GetChild(0).GetChild(i).GetChild(0).gameObject.SetActive(false);
                 partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(1).gameObject.SetActive(false);
@@ -154,16 +160,16 @@ public class PlayerSwapController : MonoBehaviour
                 partyUI.transform.GetChild(0).GetChild(i).GetChild(0).gameObject.SetActive(true);
                 partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(1).gameObject.SetActive(true);
 
-                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(0).GetComponent<Image>().sprite = partyPlayers[i].q_image;
-                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(2).GetComponent<Image>().fillAmount = partyPlayers[i].q_currentGauge / partyPlayers[i].q_maxGauge;
-                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(2).GetComponent<Image>().color = new Color32(partyPlayers[i].elementColor[0], partyPlayers[i].elementColor[1], partyPlayers[i].elementColor[2], 80);
+                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(0).GetComponent<Image>().sprite = partyPlayers[i].Q_image;
+                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(2).GetComponent<Image>().fillAmount = partyPlayers[i].Q_currentGauge / partyPlayers[i].Q_maxGauge;
+                partyUI.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(2).GetComponent<Image>().color = new Color32(partyPlayers[i].ElementColor[0], partyPlayers[i].ElementColor[1], partyPlayers[i].ElementColor[2], 80);
             }
 
-            partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = partyPlayers[i].characterName;
-            partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(1).GetComponentInChildren<Slider>().value = partyPlayers[i].currentHP / partyPlayers[i].maxHP;
+            partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = partyPlayers[i].CharacterName;
+            partyUI.transform.GetChild(0).GetChild(i).GetChild(1).GetChild(1).GetComponentInChildren<Slider>().value = partyPlayers[i].CurrentHP / partyPlayers[i].MaxHP;
 
-            partyUI.transform.GetChild(0).GetChild(i).GetChild(2).GetComponent<Image>().sprite = partyPlayers[i].profileImage;
-            if (partyPlayers[i].currentHP == 0) partyUI.transform.GetChild(0).GetChild(i).GetChild(2).GetComponent<Image>().color = new Color32(255, 255, 255, 40);
+            partyUI.transform.GetChild(0).GetChild(i).GetChild(2).GetComponent<Image>().sprite = partyPlayers[i].ProfileImage;
+            if (partyPlayers[i].CurrentHP == 0) partyUI.transform.GetChild(0).GetChild(i).GetChild(2).GetComponent<Image>().color = new Color32(255, 255, 255, 40);
             else partyUI.transform.GetChild(0).GetChild(i).GetChild(2).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         }
     }

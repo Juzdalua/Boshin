@@ -4,37 +4,48 @@ using UnityEngine;
 
 public abstract class DialogueObject : ScriptableObject
 {
-    public int id;
-    public string interactableName;
-    public int order;
-    public int questId;
-    public bool isDone;
-    public int conditionQuestId;
+    [SerializeField] private int id;
+    public int Id => id;
+    [SerializeField] private string interactableName;
+    public string InteractableName => interactableName;
+    [SerializeField] private int order;
+    public int Order => order;
+    [SerializeField] private int questId;
+    public int QuestId => questId;
+    [SerializeField] private bool isDone;
+    public bool IsDone => isDone;
+    [SerializeField] private int conditionQuestId;
+    public int ConditionQuestId => conditionQuestId;
 }
 
 [System.Serializable]
 public class Dialogue
 {
-    public string fileName;
-    public int id;
-    public string interactableName;
-    public int order;
-    public int questId;
-    public bool isDone;
-    public int conditionQuestId;
+    [SerializeField] private string fileName;
+    public string FileName => fileName;
+    [SerializeField] private int id;
+    public int Id => id;
+    [SerializeField] private string interactableName;
+    public string InteractableName => interactableName;
+    [SerializeField] private int order;
+    public int Order => order;
+    [SerializeField] private int questId;
+    public int QuestId => questId;
+    [SerializeField] private bool isDone;
+    public bool IsDone => isDone;
+    [SerializeField] private int conditionQuestId;
+    public int ConditionQuestId => conditionQuestId;
 
     public Dialogue(DialogueObject dialogue)
     {
         fileName = dialogue.name;
-        id = dialogue.id;
-        interactableName = dialogue.interactableName;
-        order = dialogue.order;
-        questId = dialogue.questId;
-        isDone = dialogue.isDone;
-        conditionQuestId = dialogue.conditionQuestId;
+        id = dialogue.Id;
+        interactableName = dialogue.InteractableName;
+        order = dialogue.Order;
+        questId = dialogue.QuestId;
+        isDone = dialogue.IsDone;
+        conditionQuestId = dialogue.ConditionQuestId;
     }
-
-    public string InteractableName { get => interactableName; set => interactableName = value; }
 
     public List<Dictionary<string, object>> MatchDialogueWithId()
     {

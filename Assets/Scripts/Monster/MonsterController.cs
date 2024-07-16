@@ -11,10 +11,10 @@ public class MonsterController : MonoBehaviour
     GameObject player;
     PlayableCharacter mainCharacter;
     int playerId = 0;
-    public Collider attackCollider;
+    [SerializeField] private Collider attackCollider;
 
     [Header("Loot System")]
-    public List<GameObject> lootItem = new List<GameObject>();
+    [SerializeField] private List<GameObject> lootItem = new List<GameObject>();
 
     private Rigidbody _rb;
     private Animator _animator;
@@ -33,20 +33,20 @@ public class MonsterController : MonoBehaviour
     private Vector3 originalPosition;
 
     [Header("Monster UI")]
-    public CanvasGroup monsterUI;
-    public TextMeshProUGUI monsterNameFrame;
-    public Slider hpSlider;
+    [SerializeField] private CanvasGroup monsterUI;
+    [SerializeField] private TextMeshProUGUI monsterNameFrame;
+    [SerializeField] private Slider hpSlider;
     private int maxHp;
     private int currentHp;
-    public GameObject hpText;
-    public GameObject damageText;
+    [SerializeField] private GameObject hpText;
+    [SerializeField] private GameObject damageText;
     private int monsterDamage;
 
     [Header("Sound")]
-    public AudioClip MosterAttackAudioClip;
-    public AudioClip HitAudioClip;
-    public AudioClip DeadAudioClip;
-    [Range(0, 5)] public float AudioVolume = 5f;
+    [SerializeField] private AudioClip MosterAttackAudioClip;
+    [SerializeField] private AudioClip HitAudioClip;
+    [SerializeField] private AudioClip DeadAudioClip;
+    [Range(0, 5)] [SerializeField] private float AudioVolume = 5f;
 
     bool isBattle = false;
     bool isFind = false;
@@ -139,7 +139,7 @@ public class MonsterController : MonoBehaviour
 
     private void FindPlayer()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) <= distanceToChasePlayer && mainCharacter.currentHP > 0)
+        if (Vector3.Distance(player.transform.position, transform.position) <= distanceToChasePlayer && mainCharacter.CurrentHP > 0)
         {
             target = player.transform.position;
             if (monsterUI.alpha == 0)
@@ -330,7 +330,7 @@ public class MonsterController : MonoBehaviour
         questObjectController = GetComponent<QuestObjectController>();
         if (questObjectController != null)
         {
-            QuestManager.Instance.UpdateQuest(questObjectController.questId, QuestType.DefeatMonster, objectData.GetId());
+            QuestManager.Instance.UpdateQuest(questObjectController.QuestId, QuestType.DefeatMonster, objectData.GetId());
         }
 
         // Loot System

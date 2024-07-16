@@ -10,19 +10,19 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [Header("UI")]
-    public Canvas background;
-    public GameObject mainFloor;
-    public GameObject door;
-    public Button startButton;
-    public Slider loadingBar;
+    [SerializeField] private Canvas background;
+    [SerializeField] private GameObject mainFloor;
+    [SerializeField] private GameObject door;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Slider loadingBar;
 
     [Header("Audio")]
-    public AudioSource bgmAudioSource;
-    public AudioClip[] bgms;
-    public AudioClip bgm;
-    public AudioSource sfxAudioSource;
-    public AudioClip doorUp;
-    public AudioClip enterSound;
+    [SerializeField] private AudioSource bgmAudioSource;
+    [SerializeField] private AudioClip[] bgms;
+    [SerializeField] private AudioClip bgm;
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioClip doorUp;
+    [SerializeField] private AudioClip enterSound;
 
     [Header("Move forward variable")]
     private int flag = 0;
@@ -30,7 +30,7 @@ public class MainMenuManager : MonoBehaviour
     private Vector3 stopPosition;
     Coroutine updateLoadingBarCoroutine;
     Coroutine infiniteFloorCoroutine;
-    public Transform infinityObjectTransform;
+    [SerializeField] private Transform infinityObjectTransform;
 
     private bool isMove = false;
     private bool isStop = false;
@@ -208,7 +208,7 @@ public class MainMenuManager : MonoBehaviour
 
                 SaveObject saveObject = new SaveObject();
                 saveObject = JsonUtility.FromJson<SaveObject>(saveData);
-                string sceneName = saveObject.sceneName;
+                string sceneName = saveObject.SceneName;
 
                 if (sceneName != null && sceneName.Trim() != "")
                     nextSceneName = sceneName;

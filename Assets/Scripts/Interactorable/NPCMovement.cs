@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class NPCMovement : MonoBehaviour
 {
-    public Transform[] waypoints;
+    [SerializeField] private Transform[] waypoints;
     NavMeshAgent _agent;
     Animator _animator;
 

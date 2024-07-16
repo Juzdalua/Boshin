@@ -8,7 +8,7 @@ public class YelanJoinEventController : MonoBehaviour
 
     [Header("Join Yelan in party")]
     private bool isJoin = false;
-    public PlayerObject yelanObject;
+    [SerializeField] private PlayerObject yelanObject;
 
     void Update()
     {
@@ -21,9 +21,9 @@ public class YelanJoinEventController : MonoBehaviour
                     _inputManager.canSwap = true;
                     isJoin = true;
 
-                    PlayerManager.Instance.GetPlayerById(yelanObject.id).isJoinParty = true;
-                    PlayerManager.Instance.GetPlayerById(yelanObject.id).partyOrder = 1;
-                    PlayerManager.Instance._playerSwapController.SetPartyUI();
+                    PlayerManager.Instance.GetPlayerById(yelanObject.Id).IsJoinParty = true;
+                    PlayerManager.Instance.GetPlayerById(yelanObject.Id).PartyOrder = 1;
+                    PlayerManager.Instance.PlayerSwapController.SetPartyUI();
                     PlayerStatManager.Instance.SetYelanJoin();
 
                     QuestManager.Instance.UpdateQuest(2, QuestType.Conversation);
@@ -45,7 +45,7 @@ public class YelanJoinEventController : MonoBehaviour
     {
         isJoin = true;
 
-        PlayerManager.Instance._playerSwapController.SetPartyUI();
+        PlayerManager.Instance.PlayerSwapController.SetPartyUI();
         PlayerStatManager.Instance.SetYelanJoin();
 
         GameObject.Destroy(transform.gameObject);

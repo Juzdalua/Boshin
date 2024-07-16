@@ -12,10 +12,10 @@ public class PlayerAttackController : MonoBehaviour
     PlayerInput _input;
     PlayerInputManager _inputManager;
     PlayerWeaponController _playerWeaponController;
-    public GameObject bulletPrefab;
-    public GameObject bulletPos;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPos;
 
-    public AudioClip AttackAudioClip;
+    [SerializeField] private AudioClip AttackAudioClip;
 
     // Start is called before the first frame update
     void Start()

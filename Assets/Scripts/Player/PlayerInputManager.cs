@@ -43,7 +43,7 @@ public class PlayerInputManager : MonoBehaviour
     }
     void Update()
     {
-        if (_inventory.IsUseInventory() || _quest.IsUseInventory() || CookManager.Instance.IsUseCook() || _stat.IsUseStat() || MenuManager.Instance.IsUseInventory() || !PlayerManager.Instance.isAlive || InformationManager.Instance.IsShowUI())
+        if (_inventory.IsUseInventory() || _quest.IsUseInventory() || CookManager.Instance.IsUseCook() || _stat.IsUseStat() || MenuManager.Instance.IsUseInventory() || !PlayerManager.Instance.IsAlive || InformationManager.Instance.IsShowUI())
         {
             StopPosition();
             canMove = false;

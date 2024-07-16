@@ -7,8 +7,14 @@ using UnityEngine;
 
 public class QuestDatabaseObject : ScriptableObject
 {
-   public QuestObject[] questObjects;
-   public List<Quest> quests = new List<Quest>();
+   [SerializeField] private QuestObject[] questObjects;
+   public QuestObject[] QuestObjects => questObjects;
+   [SerializeField] private List<Quest> quests = new List<Quest>();
+   public List<Quest> Quests
+   {
+      get { return quests; }
+      set { quests = value; }
+   }
 
    void OnEnable()
    {
@@ -22,6 +28,6 @@ public class QuestDatabaseObject : ScriptableObject
       {
          quests.Add(new Quest(questObjects[i]));
       }
-      quests = quests.OrderBy(ele => ele.order).GroupBy(ele => ele.id).Select(ele => ele.First()).ToList();
+      quests = quests.OrderBy(ele => ele.Order).GroupBy(ele => ele.Id).Select(ele => ele.First()).ToList();
    }
 }

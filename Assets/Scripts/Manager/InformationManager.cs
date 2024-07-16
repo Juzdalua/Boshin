@@ -13,16 +13,16 @@ public enum InformationButtonType
 
 public class InformationManager : Singleton<InformationManager>
 {
-    public PlayerInputManager[] _inputManagers;
-    public PlayerInputManager _inputManager;
-    public GameObject showInfomationObject;
+    [SerializeField] private PlayerInputManager[] _inputManagers;
+    [SerializeField] private PlayerInputManager _inputManager;
+    [SerializeField] private GameObject showInfomationObject;
     private int userInfomationStage = 0;
-    public Button nextButton;
-    public Button previousButton;
-    public Button closeButton;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button previousButton;
+    [SerializeField] private Button closeButton;
     private string[] currentTexts = null;
     private bool isShowUI = false;
-    public AudioClip ButtonClickAudioClip;
+    [SerializeField] private AudioClip ButtonClickAudioClip;
 
     void Awake()
     {
@@ -151,7 +151,7 @@ public class InformationManager : Singleton<InformationManager>
         if (triggerEvent != null)
         {
             // GameObject.Destroy(triggerEvent);
-            EventManager.Instance.SetDoneEventById(triggerEvent.id);
+            EventManager.Instance.SetDoneEventById(triggerEvent.Id);
         }
     }
 

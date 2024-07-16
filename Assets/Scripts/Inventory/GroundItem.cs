@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class GroundItem : MonoBehaviour, IInteractable
 {
-   public ItemObject itemObject;
-   public int amount = 1;
+   [SerializeField] private ItemObject itemObject;
+   [SerializeField] private int amount = 1;
    PlayerInteraction _playerInteraction;
    PlayerInventoryController _inventoryController;
 
    public Sprite GetGroundItemImage()
    {
-      return itemObject.itemImage;
+      return itemObject.ItemImage;
    }
 
    public string GetItemName()
    {
-      return itemObject.itemName;
+      return itemObject.ItemName;
    }
 
    public List<Dictionary<string, object>> GetDialogue()

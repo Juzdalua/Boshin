@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class LoadingScene : MonoBehaviour
 {
-    public Slider progressBar;
-    public TextMeshProUGUI tip;
-    public string[] tips;
+    [SerializeField] private Slider progressBar;
+    [SerializeField] private TextMeshProUGUI tip;
+    [SerializeField] private string[] tips;
     static string nextScene;
 
     public static void LoadScene(string sceneName)

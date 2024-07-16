@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class NPC : MonoBehaviour, IInteractable
 {
     private float rotationSpeed = 720f;
-    public string interactText;
+    [SerializeField] private string interactText;
     private float time = 0;
 
     private PlayerInteraction _playerInteraction;
@@ -83,9 +83,9 @@ public class NPC : MonoBehaviour, IInteractable
         Dialogue current = DialogueManager.Instance.GetDialogueOfNotDoneById(dialogueIds);
         if (current != null)
         {
-            if (QuestManager.Instance.questInventoryObject.IsAvailableAcceptQuest(current.questId)
-                && (QuestManager.Instance.questInventoryObject.GetDoneQuests().FindIndex(ele => ele == current.conditionQuestId) != -1
-                    || current.conditionQuestId == 0))
+            if (QuestManager.Instance.QuestInventoryObject.IsAvailableAcceptQuest(current.QuestId)
+                && (QuestManager.Instance.QuestInventoryObject.GetDoneQuests().FindIndex(ele => ele == current.ConditionQuestId) != -1
+                    || current.ConditionQuestId == 0))
             {
                 return current.MatchDialogueWithId();
             }
@@ -102,7 +102,7 @@ public class NPC : MonoBehaviour, IInteractable
 
         DialogueManager.Instance.DoneDailogue(dialogueId);
 
-        Quest quest = QuestManager.Instance.GetQuestByQuestId(current.questId);
+        Quest quest = QuestManager.Instance.GetQuestByQuestId(current.QuestId);
         if (quest != null)
         {
             QuestManager.Instance.AcceptQuest(quest);
@@ -126,9 +126,9 @@ public class NPC : MonoBehaviour, IInteractable
 
                 if (dialogueId != 0)
                 {
-                    int questId = DialogueManager.Instance.GetDialogueById(dialogueId).questId;
+                    int questId = DialogueManager.Instance.GetDialogueById(dialogueId).QuestId;
 
-                    if (QuestManager.Instance.questInventoryObject.IsAvailableAcceptQuest(questId))
+                    if (QuestManager.Instance.QuestInventoryObject.IsAvailableAcceptQuest(questId))
                     {
                         questMark.GetComponent<CanvasGroup>().alpha = 1;
                     }
@@ -144,8 +144,9 @@ public class NPC : MonoBehaviour, IInteractable
             }
         }
     }
-    
-    public string GetInteractType(){
+
+    public string GetInteractType()
+    {
         return "NPC";
     }
 
@@ -154,7 +155,8 @@ public class NPC : MonoBehaviour, IInteractable
         return null;
     }
 
-    public string GetItemName(){
+    public string GetItemName()
+    {
         return null;
     }
 }

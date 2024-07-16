@@ -6,8 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Player Database", menuName = "Player System/Database")]
 public class PlayerDatabaseObject : ScriptableObject
 {
-    public PlayerObject[] playerObjects;
-    public List<PlayableCharacter> players = new List<PlayableCharacter>();
+    [SerializeField] private PlayerObject[] playerObjects;
+    [SerializeField] private List<PlayableCharacter> players = new List<PlayableCharacter>();
+    public List<PlayableCharacter> Players => players;
     // public List<PlayableCharacter> partyPlayers = new List<PlayableCharacter>();
 
     void OnEnable()
@@ -28,6 +29,6 @@ public class PlayerDatabaseObject : ScriptableObject
         {
             players.Add(new PlayableCharacter(playerObjects[i]));
         }
-        players = players.GroupBy(ele => ele.id).Select(ele => ele.First()).ToList();
+        players = players.GroupBy(ele => ele.Id).Select(ele => ele.First()).ToList();
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FollowTargetUIController : MonoBehaviour
 {
-    public Vector3 offset;
-    public GameObject[] players;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private GameObject[] players;
     GameObject activePlayer;
     Camera mainCam;
 

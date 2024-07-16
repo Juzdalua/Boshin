@@ -6,12 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
-    public PlayerSwapController _playerSwapController;
-    public PlayerDatabaseObject playerDatabase;
-    public GameObject[] allPlayers;
+    [SerializeField] private PlayerSwapController _playerSwapController;
+    public PlayerSwapController PlayerSwapController => _playerSwapController;
+    [SerializeField] private PlayerDatabaseObject playerDatabase;
+    public PlayerDatabaseObject PlayerDatabase;
+    [SerializeField] private GameObject[] allPlayers;
     GameObject activePlayer;
-    public Canvas playerDeadCanvas;
-    public bool isAlive = true;
+    [SerializeField] private Canvas playerDeadCanvas;
+    [SerializeField] private bool isAlive = true;
+    public bool IsAlive
+    {
+        get { return isAlive; }
+        set { isAlive = value; }
+    }
 
     void Awake()
     {
@@ -65,7 +72,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public PlayableCharacter GetPlayerById(int id)
     {
-        return playerDatabase.players.Find(ele => ele.id == id);
+        return playerDatabase.Players.Find(ele => ele.Id == id);
     }
 
     // public List<PlayableCharacter> GetPartyPlayers()
@@ -84,14 +91,14 @@ public class PlayerManager : Singleton<PlayerManager>
     public List<PlayableCharacter> GetPartyPlayers()
     {
         List<PlayableCharacter> partyPlayers = new List<PlayableCharacter>();
-        for (int i = 0; i < playerDatabase.players.Count; i++)
+        for (int i = 0; i < playerDatabase.Players.Count; i++)
         {
-            if (playerDatabase.players[i].isJoinParty)
+            if (playerDatabase.Players[i].IsJoinParty)
             {
-                partyPlayers.Add(playerDatabase.players[i]);
+                partyPlayers.Add(playerDatabase.Players[i]);
             }
         }
-        partyPlayers = partyPlayers.OrderBy(ele => ele.partyOrder).GroupBy(ele => ele.id).Select(ele => ele.First()).ToList();
+        partyPlayers = partyPlayers.OrderBy(ele => ele.PartyOrder).GroupBy(ele => ele.Id).Select(ele => ele.First()).ToList();
         return partyPlayers;
     }
 
@@ -122,15 +129,15 @@ public class PlayerManager : Singleton<PlayerManager>
         for (int i = 0; i < loadPlayerDatabases.Count; i++)
         {
             var loadPlayer = loadPlayerDatabases[i];
-            var player = GetPlayerById(loadPlayer.id);
-            player.level = loadPlayer.level;
-            player.currentExp = loadPlayer.currentExp;
-            player.currentHP = loadPlayer.currentHP;
-            player.currentExp = loadPlayer.currentExp;
-            player.weaponId = loadPlayer.weaponId;
-            player.q_currentGauge = loadPlayer.q_currentGauge;
-            player.isJoinParty = loadPlayer.isJoinParty;
-            player.partyOrder = loadPlayer.partyOrder;
+            var player = GetPlayerById(loadPlayer.Id);
+            player.Level = loadPlayer.Level;
+            player.CurrentExp = loadPlayer.CurrentExp;
+            player.CurrentHP = loadPlayer.CurrentHP;
+            player.CurrentExp = loadPlayer.CurrentExp;
+            player.WeaponId = loadPlayer.WeaponId;
+            player.Q_currentGauge = loadPlayer.Q_currentGauge;
+            player.IsJoinParty = loadPlayer.IsJoinParty;
+            player.PartyOrder = loadPlayer.PartyOrder;
         }
     }
 }

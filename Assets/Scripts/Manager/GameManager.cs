@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public string currentVilligeName;
+    [SerializeField] public string currentVilligeName;
 
     void Start()
     {

@@ -22,12 +22,13 @@ public enum TriggerEventType
 
 public class TriggerEventController : MonoBehaviour
 {
-    [SerializeField] public TriggerType triggerType;
-    [SerializeField] public TriggerStartType triggerStartType;
-    [SerializeField] public TriggerEventType triggerEventType;
-    [SerializeField] public int id;
-    [SerializeField] public GameObject triggerWall;
-    [SerializeField] public string[] showInfoTexts;
+    [SerializeField] private TriggerType triggerType;
+    [SerializeField] private TriggerStartType triggerStartType;
+    [SerializeField] private TriggerEventType triggerEventType;
+    [SerializeField] private int id;
+    public int Id => id;
+    [SerializeField] private GameObject triggerWall;
+    [SerializeField] private string[] showInfoTexts;
 
     private List<int> targetIds;
 
@@ -69,11 +70,11 @@ public class TriggerEventController : MonoBehaviour
         {
             if (triggerStartType == TriggerStartType.Ongoing)
             {
-                targetIds = QuestManager.Instance.questInventoryObject.GetOngoingQuests();
+                targetIds = QuestManager.Instance.QuestInventoryObject.GetOngoingQuests();
             }
             else if (triggerStartType == TriggerStartType.Done)
             {
-                targetIds = QuestManager.Instance.questInventoryObject.GetDoneQuests();
+                targetIds = QuestManager.Instance.QuestInventoryObject.GetDoneQuests();
             }
         }
         else if (triggerType == TriggerType.Dialogue)

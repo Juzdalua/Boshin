@@ -13,31 +13,56 @@ public enum ItemType
 
 public abstract class ItemObject : ScriptableObject
 {
-    public int id;
-    public string itemName;
-    public ItemType itemType;
-    public Sprite itemImage;
-    [TextArea(15, 20)] public string desctiption;
-    public bool canUse;
-    public bool canEquip;
+    [SerializeField] private int id;
+    public int Id => id;
+    [SerializeField] private string itemName;
+    public string ItemName => itemName;
+    [SerializeField] private ItemType itemType;
+    public ItemType ItemType
+    {
+        get { return itemType; }
+        set { itemType = value; }
+    }
+    [SerializeField] private Sprite itemImage;
+    public Sprite ItemImage => itemImage;
+    [TextArea(15, 20)][SerializeField] private string desctiption;
+    public string Desctiption => desctiption;
+    [SerializeField] private bool canUse;
+    public bool CanUse => canUse;
+    [SerializeField] private bool canEquip;
+    public bool CanEquip => canEquip;
 }
 
 [System.Serializable]
-public class Item{
+public class Item
+{
     public string name;
-    public int id;
-    public string itemName;
-    public Sprite itemImage;
-    [TextArea(15, 20)] public string desctiption;
-    public bool canUse;
-    public bool canEquip;
-    public Item(ItemObject item){
+    [SerializeField] private int id;
+    public int Id => id;
+    [SerializeField] private string itemName;
+    public string ItemName => itemName;
+    [SerializeField] private ItemType itemType;
+    public ItemType ItemType
+    {
+        get { return itemType; }
+        set { itemType = value; }
+    }
+    [SerializeField] private Sprite itemImage;
+    public Sprite ItemImage => itemImage;
+    [TextArea(15, 20)][SerializeField] private string desctiption;
+    public string Desctiption => desctiption;
+    [SerializeField] private bool canUse;
+    public bool CanUse => canUse;
+    [SerializeField] private bool canEquip;
+    public bool CanEquip => canEquip;
+    public Item(ItemObject item)
+    {
         name = item.name;
-        id = item.id;
-        itemName = item.itemName;
-        itemImage = item.itemImage;
-        desctiption = item.desctiption;
-        canUse = item.canUse;
-        canEquip = item.canEquip;
+        id = item.Id;
+        itemName = item.ItemName;
+        itemImage = item.ItemImage;
+        desctiption = item.Desctiption;
+        canUse = item.CanUse;
+        canEquip = item.CanEquip;
     }
 }

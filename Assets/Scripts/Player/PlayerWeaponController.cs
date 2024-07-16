@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
-    public ItemWeaponObject[] weapons;
-    public GameObject[] weaponObjects;
-    public GameObject activeWeaponObject;
-    public ItemWeaponObject activeWeapon;
+    [SerializeField] private ItemWeaponObject[] weapons;
+    [SerializeField] private GameObject[] weaponObjects;
+    [SerializeField] private GameObject activeWeaponObject;
+    [SerializeField] private ItemWeaponObject activeWeapon;
     BoxCollider _weaponCollider;
     InventoryObject _inventory;
-    public AudioClip swapWeaponAudioClip;
+    [SerializeField] private AudioClip swapWeaponAudioClip;
 
     void Awake()
     {
@@ -20,9 +20,9 @@ public class PlayerWeaponController : MonoBehaviour
 
     void Start()
     {
-        _inventory = GetComponent<PlayerInventoryController>().inventory;
+        _inventory = GetComponent<PlayerInventoryController>().Inventory;
 
-        if (_inventory.Container.Items.FindIndex(ele => ele.id == activeWeapon.id) == -1)
+        if (_inventory.Container.Items.FindIndex(ele => ele.id == activeWeapon.Id) == -1)
         {
             _inventory.AddItem(new Item(activeWeapon), 1);
         }
@@ -43,15 +43,15 @@ public class PlayerWeaponController : MonoBehaviour
                 break;
             }
         }
-        activeWeapon = Array.Find(weapons, ele => ele.id == activeWeaponObject.GetComponent<ObjectData>().GetId());
+        activeWeapon = Array.Find(weapons, ele => ele.Id == activeWeaponObject.GetComponent<ObjectData>().GetId());
 
-        if (activeWeapon.weaponType == PlayerWeaponType.Sword)
+        if (activeWeapon.WeaponType == PlayerWeaponType.Sword)
         {
             _weaponCollider = activeWeaponObject.GetComponent<BoxCollider>();
         }
 
-        PlayerManager.Instance.GetPlayerById(GetComponent<ObjectData>().GetId()).weapon = activeWeapon;
-        PlayerManager.Instance.GetPlayerById(GetComponent<ObjectData>().GetId()).weaponId = activeWeapon.id;
+        PlayerManager.Instance.GetPlayerById(GetComponent<ObjectData>().GetId()).Weapon = activeWeapon;
+        PlayerManager.Instance.GetPlayerById(GetComponent<ObjectData>().GetId()).WeaponId = activeWeapon.Id;
     }
 
     public ItemWeaponObject GetWeaponInfo()
@@ -67,7 +67,7 @@ public class PlayerWeaponController : MonoBehaviour
     public void SwapWeapon(int weaponId)
     {
         if (activeWeapon == null) SetActiveWeapon();
-        if (activeWeapon.id == weaponId) return;
+        if (activeWeapon.Id == weaponId) return;
 
         for (int i = 0; i < weaponObjects.Length; i++)
         {
@@ -75,8 +75,8 @@ public class PlayerWeaponController : MonoBehaviour
             else weaponObjects[i].SetActive(false);
         }
 
-        activeWeapon = Array.Find(weapons, ele => ele.id == weaponId);
-        if (activeWeapon.weaponType == PlayerWeaponType.Sword) _weaponCollider = activeWeaponObject.GetComponent<BoxCollider>();
+        activeWeapon = Array.Find(weapons, ele => ele.Id == weaponId);
+        if (activeWeapon.WeaponType == PlayerWeaponType.Sword) _weaponCollider = activeWeaponObject.GetComponent<BoxCollider>();
     }
 
     private void SwapWeaponAudio()

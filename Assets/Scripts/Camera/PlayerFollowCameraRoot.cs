@@ -22,6 +22,6 @@ public class PlayerFollowCameraRoot : MonoBehaviour
 
     void FollowCharacter()
     {
-        transform.position = activePlayer.transform.position + new Vector3(0, activePlayer.GetComponent<PlayerMovement>().cameraHeight, 0);
+        transform.position = activePlayer.transform.position + new Vector3(0, activePlayer.GetComponent<PlayerMovement>().CameraHeight, 0);
     }
 }

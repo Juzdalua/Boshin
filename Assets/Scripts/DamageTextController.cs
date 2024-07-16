@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageTextController : MonoBehaviour
 {
-    public TextMesh damageText;
+    [SerializeField] private TextMesh damageText;
 
     void Update()
     {

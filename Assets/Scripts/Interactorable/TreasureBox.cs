@@ -5,14 +5,14 @@ using UnityEngine;
 public class TreasureBox : MonoBehaviour, IInteractable
 {
     [Header("Items")]
-    public GameObject[] lootItemPrefabs;
+    [SerializeField] private GameObject[] lootItemPrefabs;
 
     [Header("Audio")]
-    public AudioClip treasureAudioClip;
+    [SerializeField] private AudioClip treasureAudioClip;
 
     [Header("Animation")]
-    public GameObject closeObejct;
-    public GameObject openObejct;
+    [SerializeField] private GameObject closeObejct;
+    [SerializeField] private GameObject openObejct;
     bool isOpen = false;
 
     void Start()

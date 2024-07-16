@@ -31,7 +31,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Database", menuName = "Inventory System/Items/Database")]
 public class ItemDatabaseObject : ScriptableObject
 {
-    public ItemObject[] itemObjects;
+    [SerializeField] private ItemObject[] itemObjects;
     public List<Item> items = new List<Item>();
 
     void OnEnable()
@@ -46,6 +46,6 @@ public class ItemDatabaseObject : ScriptableObject
         {
             items.Add(new Item(itemObjects[i]));
         }
-        items = items.GroupBy(ele => ele.id).Select(ele => ele.First()).ToList();
+        items = items.GroupBy(ele => ele.Id).Select(ele => ele.First()).ToList();
     }
 }

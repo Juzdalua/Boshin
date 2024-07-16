@@ -9,12 +9,12 @@ public class DialogueManager : Singleton<DialogueManager>
 {
 
     private PlayerInteraction _playerInteraction;
-    public TextMeshProUGUI interactableName;
-    public TextMeshProUGUI content;
-    public GameObject dialogueBox;
+    [SerializeField] private TextMeshProUGUI interactableName;
+    [SerializeField] private TextMeshProUGUI content;
+    [SerializeField] private GameObject dialogueBox;
 
-    public Dictionary<int, Dialogue> playerDialogue = new Dictionary<int, Dialogue>();
-    public DialogueDatabaseObject database;
+    [SerializeField] public Dictionary<int, Dialogue> playerDialogue = new Dictionary<int, Dialogue>();
+    [SerializeField] public DialogueDatabaseObject database;
 
     void Start()
     {
@@ -74,13 +74,13 @@ public class DialogueManager : Singleton<DialogueManager>
         else
         {
             playerDialogue.Remove(dialogueId);
-            database.dialogues.Find(ele => ele.id == dialogueId).SetIsDone(false);
+            database.dialogues.Find(ele => ele.Id == dialogueId).SetIsDone(false);
         }
     }
 
     public Dialogue GetDialogueById(int dialogueId)
     {
-        return database.dialogues.Find(ele => ele.id == dialogueId);
+        return database.dialogues.Find(ele => ele.Id == dialogueId);
     }
 
     public Dialogue GetDialogueOfNotDoneById(int[] dialogueIds)
@@ -89,7 +89,7 @@ public class DialogueManager : Singleton<DialogueManager>
         Dialogue currentDialogue = null;
         for (int i = 0; i < dialogueIds.Length; i++)
         {
-            currentDialogue = database.dialogues.Find(ele => ele.id == dialogueIds[i]).GetIsDone() ? null : database.dialogues.Find(ele => ele.id == dialogueIds[i]);
+            currentDialogue = database.dialogues.Find(ele => ele.Id == dialogueIds[i]).GetIsDone() ? null : database.dialogues.Find(ele => ele.Id == dialogueIds[i]);
             if (currentDialogue != null)
             {
                 break;
@@ -104,7 +104,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         for (int i = 0; i < database.dialogues.Count; i++)
         {
-            if (database.dialogues[i].isDone)
+            if (database.dialogues[i].IsDone)
             {
                 doneDialogues.Add(database.dialogues[i]);
             }
@@ -119,7 +119,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         for (int i = 0; i < GetDoneDialogues().Count; i++)
         {
-           doneDialoguesIds.Add(GetDoneDialogues()[i].id);
+           doneDialoguesIds.Add(GetDoneDialogues()[i].Id);
         }
         return doneDialoguesIds;
     }

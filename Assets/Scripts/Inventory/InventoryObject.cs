@@ -10,8 +10,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    public string savePath;
-    public ItemDatabaseObject database;
+    [SerializeField] private string savePath;
+    [SerializeField] private ItemDatabaseObject database;
     public Inventory Container;
 
     //     private void OnEnable()
@@ -27,19 +27,19 @@ public class InventoryObject : ScriptableObject
     {
         for (int i = 0; i < Container.Items.Count; i++)
         {
-            if (Container.Items[i].item.id == _item.id)
+            if (Container.Items[i].item.Id == _item.Id)
             {
                 Container.Items[i].AddAmount(_amount);
                 return;
             }
         }
-        Container.Items.Add(new InventorySlot(_item.id, _item, _amount));
+        Container.Items.Add(new InventorySlot(_item.Id, _item, _amount));
         Container.Items = Container.Items.OrderBy(ele => ele.id).GroupBy(ele => ele.id).Select(ele => ele.First()).ToList();
     }
 
     public Item GetItemById(int id)
     {
-        return database.items.Find(ele => ele.id == id);
+        return database.items.Find(ele => ele.Id == id);
     }
 
     public InventorySlot GetPlayerItemById(int id)

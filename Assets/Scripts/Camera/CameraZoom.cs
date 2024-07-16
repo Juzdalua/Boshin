@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class CameraZoom : MonoBehaviour
 {
-    public CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
     CinemachineComponentBase componentBase;
     float cameraDistance;
-    public float sensitivity = 10f;
+    [SerializeField] private float sensitivity = 10f;
 
     void Start()
     {

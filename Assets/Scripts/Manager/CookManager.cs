@@ -13,25 +13,25 @@ public class CookManager : Singleton<CookManager>
     bool isUseCook = false;
     int hasRecipeCount = 0;
 
-    public Transform cookScreenUI;
-    public GameObject cookDetailUI;
-    public List<ItemFoodObject> cookList = new List<ItemFoodObject>();
-    public InventoryObject playerInventory;
-    public InventoryController _inventory;
-    public GameObject successUI;
+    [SerializeField] private Transform cookScreenUI;
+    [SerializeField] private GameObject cookDetailUI;
+    [SerializeField] private List<ItemFoodObject> cookList = new List<ItemFoodObject>();
+    [SerializeField] private InventoryObject playerInventory;
+    [SerializeField] private InventoryController _inventory;
+    [SerializeField] private GameObject successUI;
 
     [Header("Audio")]
-    public AudioClip CookOpenAudioClip;
-    public AudioClip CookSuccessAudioClip;
+    [SerializeField] private AudioClip CookOpenAudioClip;
+    [SerializeField] private AudioClip CookSuccessAudioClip;
 
     [Header("Display")]
-    public GameObject cookPrefab;
-    public GameObject cookRecipePrefab;
-    public int X_START = -500;
-    public int Y_START = 390;
-    public int X_PADDING = 220;
-    public int Y_PADDING = 220;
-    public int NUMBER_OF_COLUMN = 5;
+    [SerializeField] private GameObject cookPrefab;
+    [SerializeField] private GameObject cookRecipePrefab;
+    [SerializeField] private int X_START = -500;
+    [SerializeField] private int Y_START = 390;
+    [SerializeField] private int X_PADDING = 220;
+    [SerializeField] private int Y_PADDING = 220;
+    [SerializeField] private int NUMBER_OF_COLUMN = 5;
     Dictionary<int, GameObject> cookDisplayed = new Dictionary<int, GameObject>();
     List<GameObject> cookDetailDisplayed = new List<GameObject>();
 
@@ -48,7 +48,7 @@ public class CookManager : Singleton<CookManager>
 
         for (int i = 0; i < cookList.Count; i++)
         {
-            if (!cookList[i].canCook)
+            if (!cookList[i].CanCook)
             {
                 cookList.RemoveAt(i);
             }
@@ -84,19 +84,19 @@ public class CookManager : Singleton<CookManager>
     {
         for (int i = 0; i < cookList.Count; i++)
         {
-            int itemId = cookList[i].id;
-            if (!cookDisplayed.ContainsKey(cookList[i].id))
+            int itemId = cookList[i].Id;
+            if (!cookDisplayed.ContainsKey(cookList[i].Id))
             {
                 GameObject obj = Instantiate(cookPrefab, Vector3.zero, Quaternion.identity, cookScreenUI);
-                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = cookList[i].itemImage;
+                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = cookList[i].ItemImage;
                 obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-                obj.GetComponentInChildren<TextMeshProUGUI>().text = cookList[i].itemName.Length <= 4 ? cookList[i].itemName : cookList[i].itemName.Substring(0, 4) + "...";
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = cookList[i].ItemName.Length <= 4 ? cookList[i].ItemName : cookList[i].ItemName.Substring(0, 4) + "...";
 
-                obj.GetComponent<ObjectData>().SetId(cookList[i].id);
+                obj.GetComponent<ObjectData>().SetId(cookList[i].Id);
                 obj.GetComponent<ObjectData>().SetObjectType(ObjectType.Item);
                 obj.GetComponent<Button>().onClick.AddListener(() => ClickCookDetail(itemId));
 
-                cookDisplayed.Add(cookList[i].id, obj);
+                cookDisplayed.Add(cookList[i].Id, obj);
 
             }
         }
@@ -109,7 +109,7 @@ public class CookManager : Singleton<CookManager>
 
     private ItemFoodObject GetFoodObjectByItemId(int itemId)
     {
-        return cookList.Find(ele => ele.id == itemId);
+        return cookList.Find(ele => ele.Id == itemId);
     }
 
     public void ClickCookDetail(int itemId)
@@ -117,25 +117,25 @@ public class CookManager : Singleton<CookManager>
         ItemFoodObject foodObjcet = GetFoodObjectByItemId(itemId);
         if (foodObjcet != null)
         {
-            cookDetailUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = foodObjcet.desctiption;
+            cookDetailUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = foodObjcet.Desctiption;
             ShowCookDetail(true);
 
             makingButton.onClick.AddListener(() => MakeFood(itemId));
 
             // recipe create
-            if (foodObjcet.recipes.Count > 0 && cookDetailDisplayed.Count == 0)
+            if (foodObjcet.Recipes.Count > 0 && cookDetailDisplayed.Count == 0)
             {
-                for (int i = 0; i < foodObjcet.recipes.Count; i++)
+                for (int i = 0; i < foodObjcet.Recipes.Count; i++)
                 {
                     GameObject obj = Instantiate(cookRecipePrefab, Vector3.zero, Quaternion.identity, cookDetailUI.transform.GetChild(1).GetChild(1));
-                    obj.transform.GetChild(0).GetComponent<Image>().sprite = foodObjcet.recipes[i].itemImage;
-                    obj.GetComponentInChildren<TextMeshProUGUI>().text = foodObjcet.recipeAmount[i].ToString("n0");
+                    obj.transform.GetChild(0).GetComponent<Image>().sprite = foodObjcet.Recipes[i].ItemImage;
+                    obj.GetComponentInChildren<TextMeshProUGUI>().text = foodObjcet.RecipeAmount[i].ToString("n0");
                     cookDetailDisplayed.Add(obj);
                 }
             }
 
             // recipe check
-            if (foodObjcet.recipes.Count > 0)
+            if (foodObjcet.Recipes.Count > 0)
             {
                 if (CheckRecipe(GetFoodObjectByItemId(itemId)))
                 {
@@ -148,20 +148,20 @@ public class CookManager : Singleton<CookManager>
 
     private bool CheckRecipe(ItemFoodObject foodObjcet)
     {
-        for (int i = 0; i < foodObjcet.recipes.Count; i++)
+        for (int i = 0; i < foodObjcet.Recipes.Count; i++)
         {
-            if (playerInventory.Container.Items.FindIndex(ele => ele.id == foodObjcet.recipes[i].id) != -1)
+            if (playerInventory.Container.Items.FindIndex(ele => ele.id == foodObjcet.Recipes[i].Id) != -1)
             {
                 //check amount
-                var recipe = playerInventory.Container.Items.Find(ele => ele.id == foodObjcet.recipes[i].id);
-                if (recipe.amount >= foodObjcet.recipeAmount[i])
+                var recipe = playerInventory.Container.Items.Find(ele => ele.id == foodObjcet.Recipes[i].Id);
+                if (recipe.amount >= foodObjcet.RecipeAmount[i])
                 {
                     hasRecipeCount++;
                 }
             }
         }
 
-        if (hasRecipeCount == foodObjcet.recipes.Count)
+        if (hasRecipeCount == foodObjcet.Recipes.Count)
         {
             hasRecipeCount = 0;
             return true;
@@ -174,17 +174,17 @@ public class CookManager : Singleton<CookManager>
         ItemFoodObject foodObjcet = GetFoodObjectByItemId(itemId);
         if (foodObjcet != null)
         {
-            for (int i = 0; i < foodObjcet.recipes.Count; i++)
+            for (int i = 0; i < foodObjcet.Recipes.Count; i++)
             {
-                var recipe = playerInventory.Container.Items.Find(ele => ele.id == foodObjcet.recipes[i].id);
-                recipe.amount -= foodObjcet.recipeAmount[i]; // Error todo
+                var recipe = playerInventory.Container.Items.Find(ele => ele.id == foodObjcet.Recipes[i].Id);
+                recipe.amount -= foodObjcet.RecipeAmount[i]; // Error todo
                 if (recipe.amount == 0) playerInventory.Container.Items.Remove(recipe);
             }
 
             if(CookSuccessAudioClip != null) SoundManager.Instance.SFXPlay(CookSuccessAudioClip.name, CookSuccessAudioClip);
             Item newItem = new Item(foodObjcet);
             playerInventory.AddItem(newItem, 1);
-            successUI.transform.GetChild(0).GetComponent<Image>().sprite = foodObjcet.itemImage;
+            successUI.transform.GetChild(0).GetComponent<Image>().sprite = foodObjcet.ItemImage;
             successUI.SetActive(true);
         }
     }

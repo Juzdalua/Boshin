@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class SoundManager : Singleton<SoundManager>
 {
-    [Range(0, 1)] public float bgmVolume = 0.5f;
-    [Range(0, 1)] public float sfxVolume = 0.5f;
+    [Range(0, 1)][SerializeField] private float bgmVolume = 0.5f;
+    public float BgmVolume
+    {
+        get { return bgmVolume; }
+        set { bgmVolume = value; }
+    }
+    [Range(0, 1)][SerializeField] private float sfxVolume = 0.5f;
+    public float SfxVolume
+    {
+        get { return sfxVolume; }
+        set { sfxVolume = value; }
+    }
 
-    public AudioSource bgmSound;
+    [SerializeField] private AudioSource bgmSound;
 
     [Header("Audio Clips")]
-    public AudioClip battleAudioClip;
-    public AudioClip playerDeadAudioClip;
+    [SerializeField] private AudioClip battleAudioClip;
+    [SerializeField] private AudioClip playerDeadAudioClip;
 
     void Update()
     {

@@ -9,33 +9,94 @@ using UnityEngine.UI;
 public class SaveObject
 {
     // Scene
-    public string sceneName;
+    [SerializeField] private string sceneName;
+    public string SceneName
+    {
+        get { return sceneName; }
+        set { sceneName = value; }
+    }
 
     // Player
-    public int lastPlayerId;
-    public Vector3 playerPosition; // Position
-    public Quaternion playerRotation; // Rotation
-    public List<PlayableCharacter> playerDatabases = new List<PlayableCharacter>(); // Database
-    public List<PlayableCharacter> partyPlayers = new List<PlayableCharacter>(); // Party
+    [SerializeField] private int lastPlayerId;
+    public int LastPlayerId{
+        get { return lastPlayerId; }
+        set { lastPlayerId = value; }
+    }
+    [SerializeField] private Vector3 playerPosition; // Position
+    public Vector3 PlayerPosition{
+        get { return playerPosition; }
+        set { playerPosition = value; }
+    }
+    [SerializeField] private Quaternion playerRotation; // Rotation
+    public Quaternion PlayerRotation{
+        get { return playerRotation; }
+        set { playerRotation = value; }
+    }
+    [SerializeField] private List<PlayableCharacter> playerDatabases = new List<PlayableCharacter>(); // Database
+    public List<PlayableCharacter> PlayerDatabases{
+        get { return playerDatabases; }
+        set { playerDatabases = value; }
+    }
+    [SerializeField] private List<PlayableCharacter> partyPlayers = new List<PlayableCharacter>(); // Party
+    public List<PlayableCharacter> PartyPlayers{
+        get { return partyPlayers; }
+        set { partyPlayers = value; }
+    }
 
     // Item
-    public Inventory Container; // Inventory
-    public int useItemId = 0;// Z use Item
+    [SerializeField] private Inventory inventoryContainer; // Inventory
+    public Inventory InventoryContainer{
+        get { return inventoryContainer; }
+        set { inventoryContainer = value; }
+    }
+    [SerializeField] private int useItemId = 0;// Z use Item
+    public int UseItemId{
+        get { return useItemId; }
+        set { useItemId = value; }
+    }
 
     // Quest
-    public List<Quest> quests = new List<Quest>();
-    public List<int> doneQuest = new List<int>();
-    public List<int> ongoingQuest = new List<int>();
+    [SerializeField] private List<Quest> quests = new List<Quest>();
+    public List<Quest> Quests{
+        get { return quests; }
+        set { quests = value; }
+    }
+    [SerializeField] private List<int> doneQuest = new List<int>();
+    public List<int> DoneQuest{
+        get { return doneQuest; }
+        set { doneQuest = value; }
+    }
+    [SerializeField] private List<int> ongoingQuest = new List<int>();
+    public List<int> OngoingQuest{
+        get { return ongoingQuest; }
+        set { ongoingQuest = value; }
+    }
 
     // Dialogue
-    public List<Dialogue> dialogues = new List<Dialogue>();
-    public Dictionary<int, Dialogue> playerDialogue = new Dictionary<int, Dialogue>();
+    [SerializeField] private List<Dialogue> dialogues = new List<Dialogue>();
+    public List<Dialogue> Dialogues{
+        get { return dialogues; }
+        set { dialogues = value; }
+    }
+    [SerializeField] private Dictionary<int, Dialogue> playerDialogue = new Dictionary<int, Dialogue>();
+    public Dictionary<int, Dialogue> PlayerDialogue{
+        get { return playerDialogue; }
+        set { playerDialogue = value; }
+    }
 
     // Trigger Event
-    public List<int> doneEventIds = new List<int>();
+    [SerializeField] private List<int> doneEventIds = new List<int>();
+    public List<int> DoneEventIds{
+        get { return doneEventIds; }
+        set { doneEventIds = value; }
+    }
 
     // Treasure Box
-    public List<int> doneTreasure = new List<int>();
+    [SerializeField] private List<int> doneTreasure = new List<int>();
+    public List<int> DoneTreasure{
+        get { return doneTreasure; }
+        set { doneTreasure = value; }
+    }
 
     // Party
 }
@@ -95,39 +156,39 @@ public class DataManager : Singleton<DataManager>
         SetActivePlayer();
 
         // Scene
-        saveObject.sceneName = sceneName;
+        saveObject.SceneName = sceneName;
 
         // Player Swap
-        saveObject.lastPlayerId = activePlayer.GetComponent<ObjectData>().GetId();
+        saveObject.LastPlayerId = activePlayer.GetComponent<ObjectData>().GetId();
 
         // Player Transform
-        saveObject.playerPosition = activePlayer.transform.position;
-        saveObject.playerRotation = activePlayer.transform.rotation;
+        saveObject.PlayerPosition = activePlayer.transform.position;
+        saveObject.PlayerRotation = activePlayer.transform.rotation;
 
         // Player Database
-        saveObject.playerDatabases = PlayerManager.Instance.playerDatabase.players;
+        saveObject.PlayerDatabases = PlayerManager.Instance.PlayerDatabase.Players;
 
         // Party
         // saveObject.partyPlayers = PlayerManager.Instance.playerDatabase.partyPlayers;
 
         // Player Inventory
-        saveObject.Container = inventory.Container;
-        if (useItemUI.GetComponent<ObjectData>().GetId() != 0) saveObject.useItemId = useItemUI.GetComponent<ObjectData>().GetId();
+        saveObject.InventoryContainer = inventory.Container;
+        if (useItemUI.GetComponent<ObjectData>().GetId() != 0) saveObject.UseItemId = useItemUI.GetComponent<ObjectData>().GetId();
 
         // Quest
-        saveObject.quests = QuestManager.Instance.database.quests;
-        saveObject.doneQuest = QuestManager.Instance.questInventoryObject.doneQuest;
-        saveObject.ongoingQuest = QuestManager.Instance.questInventoryObject.ongoingQuest;
+        saveObject.Quests = QuestManager.Instance.Database.Quests;
+        saveObject.DoneQuest = QuestManager.Instance.QuestInventoryObject.doneQuest;
+        saveObject.OngoingQuest = QuestManager.Instance.QuestInventoryObject.ongoingQuest;
 
         // Dialogue
-        saveObject.dialogues = DialogueManager.Instance.database.dialogues;
-        saveObject.playerDialogue = DialogueManager.Instance.playerDialogue;
+        saveObject.Dialogues = DialogueManager.Instance.database.dialogues;
+        saveObject.PlayerDialogue = DialogueManager.Instance.playerDialogue;
 
         // Trigger Event
-        saveObject.doneEventIds = EventManager.Instance.doneEventIds;
+        saveObject.DoneEventIds = EventManager.Instance.doneEventIds;
 
         // Treasure Box
-        saveObject.doneTreasure = EventManager.Instance.doneTreasure;
+        saveObject.DoneTreasure = EventManager.Instance.doneTreasure;
 
         return saveObject;
     }
@@ -146,7 +207,7 @@ public class DataManager : Singleton<DataManager>
     void SetPlayerInformation()
     {
         // Scene
-        if (saveObject.sceneName != null && saveObject.sceneName.Trim() != "") sceneName = saveObject.sceneName;
+        if (saveObject.SceneName != null && saveObject.SceneName.Trim() != "") sceneName = saveObject.SceneName;
 
         SetActivePlayer();
 
@@ -157,12 +218,12 @@ public class DataManager : Singleton<DataManager>
         // PlayerManager.Instance._playerSwapController.SetPartyUI();
 
         // Player Tranform
-        activePlayer.transform.position = saveObject.playerPosition;
-        activePlayer.transform.rotation = saveObject.playerRotation;
+        activePlayer.transform.position = saveObject.PlayerPosition;
+        activePlayer.transform.rotation = saveObject.PlayerRotation;
 
         // Player Database
         // PlayerManager.Instance.playerDatabase.players = saveObject.playerDatabases;
-        PlayerManager.Instance.LoadPlayerInformation(saveObject.playerDatabases);
+        PlayerManager.Instance.LoadPlayerInformation(saveObject.PlayerDatabases);
         mainCharacter = PlayerManager.Instance.GetMainCharacter();
 
         // Party
@@ -174,35 +235,35 @@ public class DataManager : Singleton<DataManager>
             activePlayer.GetComponent<PlayerInputManager>().canSwap = true;
         }
 
-        qSkillUI.transform.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.q_currentGauge / mainCharacter.q_maxGauge;
-        hpSlider.value = mainCharacter.currentHP / mainCharacter.maxHP;
-        hpText.text = mainCharacter.currentHP.ToString("n0");
+        qSkillUI.transform.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.Q_currentGauge / mainCharacter.Q_maxGauge;
+        hpSlider.value = mainCharacter.CurrentHP / mainCharacter.MaxHP;
+        hpText.text = mainCharacter.CurrentHP.ToString("n0");
 
         // Player Inventory
-        inventory.Container = saveObject.Container;
-        if (saveObject.useItemId != 0) useItemUI.GetComponent<ObjectData>().SetId(saveObject.useItemId);
+        inventory.Container = saveObject.InventoryContainer;
+        if (saveObject.UseItemId != 0) useItemUI.GetComponent<ObjectData>().SetId(saveObject.UseItemId);
 
         // Weapon
-        activePlayer.GetComponent<PlayerWeaponController>().SwapWeapon(mainCharacter.weapon.id);
+        activePlayer.GetComponent<PlayerWeaponController>().SwapWeapon(mainCharacter.Weapon.Id);
 
         // Quest
-        QuestManager.Instance.database.quests = saveObject.quests;
-        QuestManager.Instance.questInventoryObject.doneQuest = saveObject.doneQuest;
-        QuestManager.Instance.questInventoryObject.ongoingQuest = saveObject.ongoingQuest;
-        if (saveObject.ongoingQuest.Count > 0)
+        QuestManager.Instance.Database.Quests = saveObject.Quests;
+        QuestManager.Instance.QuestInventoryObject.doneQuest = saveObject.DoneQuest;
+        QuestManager.Instance.QuestInventoryObject.ongoingQuest = saveObject.OngoingQuest;
+        if (saveObject.OngoingQuest.Count > 0)
         {
-            QuestManager.Instance.SetQuest(QuestManager.Instance.GetQuestByQuestId(saveObject.ongoingQuest[0]));
+            QuestManager.Instance.SetQuest(QuestManager.Instance.GetQuestByQuestId(saveObject.OngoingQuest[0]));
         }
 
         // Dialogue
-        DialogueManager.Instance.database.dialogues = saveObject.dialogues;
-        DialogueManager.Instance.playerDialogue = saveObject.playerDialogue;
+        DialogueManager.Instance.database.dialogues = saveObject.Dialogues;
+        DialogueManager.Instance.playerDialogue = saveObject.PlayerDialogue;
 
         // Trigger Event
-        EventManager.Instance.doneEventIds = saveObject.doneEventIds;
+        EventManager.Instance.doneEventIds = saveObject.DoneEventIds;
 
         // Treasure Box
-        EventManager.Instance.doneTreasure = saveObject.doneTreasure;
+        EventManager.Instance.doneTreasure = saveObject.DoneTreasure;
     }
 
     public void NewGame()

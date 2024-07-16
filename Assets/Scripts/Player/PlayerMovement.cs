@@ -13,19 +13,20 @@ public class PlayerMovement : MonoBehaviour
     PlayerInputManager _input;
     PlayerStateController _state;
 
-    public Transform _cameraFollowTarget;
-    public float cameraHeight;
-    public TrailRenderer[] trailEffects;
+    [SerializeField] private Transform _cameraFollowTarget;
+    [SerializeField] private float cameraHeight;
+    public float CameraHeight => cameraHeight;
+    [SerializeField] private TrailRenderer[] trailEffects;
 
     float inputMagnitude;
     float xRotation;
     float yRotation;
 
     [Header("Mouse with Movement")]
-    public float smoothness = 10;
-    public float sensitivity = 5f;
-    public float limitMinX = -80;
-    public float limitMaxX = 80;
+    [SerializeField] private float smoothness = 10;
+    [SerializeField] private float sensitivity = 5f;
+    [SerializeField] private float limitMinX = -80;
+    [SerializeField] private float limitMaxX = 80;
 
     [Header("Movement")]
     Vector3 inputDirection;
@@ -38,9 +39,9 @@ public class PlayerMovement : MonoBehaviour
     float verticalVelocity;
 
     [Header("Speed")]
-    public float maxSpeed = 8f;
-    public float speed = 4f;
-    public float moveSpeed;
+    [SerializeField] private float maxSpeed = 8f;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private float moveSpeed;
 
     [Header("State")]
     private bool isJumping;
@@ -51,9 +52,9 @@ public class PlayerMovement : MonoBehaviour
     Coroutine dashCoroutine;
 
     [Header("Jump")]
-    // public float gravity = Physics.gravity.y;
-    public float gravity = -15;
-    public float jumpSpeed = 1.2f;
+    // [SerializeField] private float gravity = Physics.gravity.y;
+    [SerializeField] private float gravity = -15;
+    [SerializeField] private float jumpSpeed = 1.2f;
     private float lastJumpTime = 0f;
     private float jumpDealyTime = 1f;
     private float fallTimeoutdelta;
@@ -61,22 +62,22 @@ public class PlayerMovement : MonoBehaviour
     private float velocityOfApplyGravity = 53f;
 
     [Header("Dash")]
-    public float dashTime = 0.25f;
-    public float dashSpeed = 10f;
+    [SerializeField] private float dashTime = 0.25f;
+    [SerializeField] private float dashSpeed = 10f;
     private float dashStartTime = 0;
-    public float dashCoolTime = 0.5f;
+    [SerializeField] private float dashCoolTime = 0.5f;
 
     [Header("Audio")]
-    public AudioClip LandingAudioClip;
-    public AudioClip FootstepAudioClip;
-    public AudioClip JumpAudioClip;
-    public AudioClip DashAudioClip;
+    [SerializeField] private AudioClip LandingAudioClip;
+    [SerializeField] private AudioClip FootstepAudioClip;
+    [SerializeField] private AudioClip JumpAudioClip;
+    [SerializeField] private AudioClip DashAudioClip;
 
     [Header("Ground Check")]
     Vector3 spherePosition;
-    public LayerMask groundLayer;
-    public float groundedOffset = -0.14f;
-    public float groundedRadius = 0.28f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundedOffset = -0.14f;
+    [SerializeField] private float groundedRadius = 0.28f;
 
     void Start()
     {
@@ -110,11 +111,11 @@ public class PlayerMovement : MonoBehaviour
 
     void CameraRotation()
     {
-        if (PlayerManager.Instance._playerSwapController.isSwap)
+        if (PlayerManager.Instance.PlayerSwapController.IsSwap)
         {
-            xRotation = PlayerManager.Instance._playerSwapController.tempCameraRoot.x;
-            yRotation = PlayerManager.Instance._playerSwapController.tempCameraRoot.y;
-            PlayerManager.Instance._playerSwapController.isSwap = false;
+            xRotation = PlayerManager.Instance.PlayerSwapController.TempCameraRoot.x;
+            yRotation = PlayerManager.Instance.PlayerSwapController.TempCameraRoot.y;
+            PlayerManager.Instance.PlayerSwapController.IsSwap = false;
 
             if (xRotation >= limitMaxX) xRotation -= 360;
             else if (xRotation <= -limitMinX) xRotation = 360;
@@ -181,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetBool("isMoving", true);
         _animator.SetFloat("Blend_Run", inputMagnitude, 0.05f, Time.deltaTime);
 
-        _state.isSprinting = moveSpeed == maxSpeed ? true : false;
+        _state.IsSprinting = moveSpeed == maxSpeed ? true : false;
         if (moveSpeed == maxSpeed)
         {
             _state.SprintingWithStamina();

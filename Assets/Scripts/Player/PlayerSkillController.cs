@@ -10,15 +10,15 @@ using System.Linq;
 public class PlayerSkillController : MonoBehaviour
 {
     int playerId;
-    public PlayableCharacter mainCharacter;
-    public GameObject skillUI;
-    public Transform skillPos;
-    public GameObject eSkillPrefeb;
-    public GameObject qSkillPrefeb;
+    [SerializeField] private PlayableCharacter mainCharacter;
+    [SerializeField] private GameObject skillUI;
+    [SerializeField] private Transform skillPos;
+    [SerializeField] private GameObject eSkillPrefeb;
+    [SerializeField] private GameObject qSkillPrefeb;
     PlayerInputManager _inputManager;
     PlayerInput _input;
     Animator _animator;
-    public CinemachineFreeLook frontCamera;
+    [SerializeField] private CinemachineFreeLook frontCamera;
 
     Transform eSkillUI;
     Transform qSkillUI;
@@ -30,10 +30,10 @@ public class PlayerSkillController : MonoBehaviour
 
     bool isChnnelingQ = false;
 
-    public AudioClip ESkillEffectAudioClip;
-    public AudioClip QSkillEffectAudioClip;
-    public AudioClip QSkillChargeAudioClip;
-    [Range(0, 1)] public float AudioVolume;
+    [SerializeField] private AudioClip ESkillEffectAudioClip;
+    [SerializeField] private AudioClip QSkillEffectAudioClip;
+    [SerializeField] private AudioClip QSkillChargeAudioClip;
+    [Range(0, 1)] [SerializeField] private float AudioVolume;
 
 
     void Start()
@@ -61,10 +61,10 @@ public class PlayerSkillController : MonoBehaviour
     private void DoESkill()
     {
         _inputManager.eSkill = false;
-        if (Time.time > eSkillStartTIme + mainCharacter.e_cooltime || eSkillStartTIme == 0)
+        if (Time.time > eSkillStartTIme + mainCharacter.E_cooltime || eSkillStartTIme == 0)
         {
             eSkillStartTIme = Time.time;
-            mainCharacter.e_startTime = eSkillStartTIme;
+            mainCharacter.E_startTime = eSkillStartTIme;
             // mainCharacter.e_remainTime = eSkillStartTIme;
             _input.enabled = false;
             eSkillCoroutine = StartCoroutine(DoESkillCoroutine());
@@ -81,12 +81,12 @@ public class PlayerSkillController : MonoBehaviour
         eSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
 
         float timer = 0f;
-        while (timer < mainCharacter.e_cooltime)
+        while (timer < mainCharacter.E_cooltime)
         {
             yield return null;
             timer += Time.deltaTime;
-            eSkillUI.GetChild(1).GetComponent<Image>().fillAmount = Mathf.Lerp(0f, 1f, 1 / mainCharacter.e_cooltime * timer);
-            eSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = (((float)((int)((mainCharacter.e_cooltime - timer) * 10))) / 10).ToString();
+            eSkillUI.GetChild(1).GetComponent<Image>().fillAmount = Mathf.Lerp(0f, 1f, 1 / mainCharacter.E_cooltime * timer);
+            eSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = (((float)((int)((mainCharacter.E_cooltime - timer) * 10))) / 10).ToString();
         }
         eSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 0;
         yield break;
@@ -96,14 +96,14 @@ public class PlayerSkillController : MonoBehaviour
     {
         yield return null;
 
-        float targetTime = mainCharacter.e_startTime + mainCharacter.e_cooltime;
+        float targetTime = mainCharacter.E_startTime + mainCharacter.E_cooltime;
         if (Time.time > targetTime)
         {
             yield break;
         }
 
         eSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
-        eSkillUI.GetChild(1).GetComponent<Image>().fillAmount = (targetTime - Time.time) / mainCharacter.e_cooltime;
+        eSkillUI.GetChild(1).GetComponent<Image>().fillAmount = (targetTime - Time.time) / mainCharacter.E_cooltime;
 
         float timer = Time.time;
         while (Time.time < targetTime)
@@ -119,9 +119,9 @@ public class PlayerSkillController : MonoBehaviour
 
     private void OnESkillSound(AnimationEvent animationEvent)
     {
-        if (mainCharacter.e_audios.Length > 0)
+        if (mainCharacter.E_audios.Length > 0)
         {
-            AudioClip eSkillPlayer = mainCharacter.e_audios[Random.Range(0, mainCharacter.e_audios.Length - 1)];
+            AudioClip eSkillPlayer = mainCharacter.E_audios[Random.Range(0, mainCharacter.E_audios.Length - 1)];
             SoundManager.Instance.SFXPlay("ESkillPlayer", eSkillPlayer);
         }
 
@@ -144,12 +144,12 @@ public class PlayerSkillController : MonoBehaviour
 
     public void ChargeQGauge()
     {
-        if (mainCharacter.q_currentGauge < mainCharacter.q_maxGauge)
+        if (mainCharacter.Q_currentGauge < mainCharacter.Q_maxGauge)
         {
-            mainCharacter.q_currentGauge += mainCharacter.e_gauge;
-            qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.q_currentGauge / mainCharacter.q_maxGauge;
+            mainCharacter.Q_currentGauge += mainCharacter.E_gauge;
+            qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.Q_currentGauge / mainCharacter.Q_maxGauge;
 
-            if (mainCharacter.q_currentGauge >= mainCharacter.q_maxGauge && (Time.time > qSkillStartTIme + mainCharacter.q_cooltime || qSkillStartTIme == 0))
+            if (mainCharacter.Q_currentGauge >= mainCharacter.Q_maxGauge && (Time.time > qSkillStartTIme + mainCharacter.Q_cooltime || qSkillStartTIme == 0))
             {
                 ReadyQSkill();
             }
@@ -168,24 +168,24 @@ public class PlayerSkillController : MonoBehaviour
     private void DoQSkill()
     {
         _inputManager.qSkill = false;
-        if (mainCharacter.q_currentGauge < mainCharacter.q_maxGauge)
+        if (mainCharacter.Q_currentGauge < mainCharacter.Q_maxGauge)
         {
             return;
         }
 
         float qAnimationDealyTime = 0f;
-        if (Time.time > qSkillStartTIme + mainCharacter.q_cooltime + qAnimationDealyTime || qSkillStartTIme == 0)
+        if (Time.time > qSkillStartTIme + mainCharacter.Q_cooltime + qAnimationDealyTime || qSkillStartTIme == 0)
         {
             qSkillStartTIme = Time.time;
-            mainCharacter.q_startTime = qSkillStartTIme;
+            mainCharacter.Q_startTime = qSkillStartTIme;
             _input.enabled = false;
             isChnnelingQ = true;
 
-            mainCharacter.q_currentGauge = 0;
+            mainCharacter.Q_currentGauge = 0;
             qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = 0f;
             qSkillUI.GetChild(5).GetComponent<CanvasGroup>().alpha = 0;
 
-            GetComponent<PlayerInteraction>().playerCamera.enabled = false;
+            GetComponent<PlayerInteraction>().PlayerCamera.enabled = false;
 
             frontCamera.enabled = true;
 
@@ -196,9 +196,9 @@ public class PlayerSkillController : MonoBehaviour
 
     private IEnumerator DoQSkillCoroutine()
     {
-        if (mainCharacter.q_audios.Length > 0)
+        if (mainCharacter.Q_audios.Length > 0)
         {
-            AudioClip qSkillPlayer = mainCharacter.q_audios[Random.Range(0, mainCharacter.q_audios.Length - 1)];
+            AudioClip qSkillPlayer = mainCharacter.Q_audios[Random.Range(0, mainCharacter.Q_audios.Length - 1)];
             SoundManager.Instance.SFXPlay("QSkillPlayer", qSkillPlayer);
         }
 
@@ -210,12 +210,12 @@ public class PlayerSkillController : MonoBehaviour
         qSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
 
         float timer = 0f;
-        while (timer < mainCharacter.q_cooltime)
+        while (timer < mainCharacter.Q_cooltime)
         {
             yield return null;
             timer += Time.deltaTime;
-            qSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = (((float)((int)((mainCharacter.q_cooltime - timer) * 10))) / 10).ToString();
-            qSkillUI.GetChild(3).GetComponent<Image>().fillAmount = Mathf.Lerp(0f, 1f, 1 / mainCharacter.q_cooltime * timer);
+            qSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = (((float)((int)((mainCharacter.Q_cooltime - timer) * 10))) / 10).ToString();
+            qSkillUI.GetChild(3).GetComponent<Image>().fillAmount = Mathf.Lerp(0f, 1f, 1 / mainCharacter.Q_cooltime * timer);
         }
         qSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 0;
         isChnnelingQ = false;
@@ -227,16 +227,16 @@ public class PlayerSkillController : MonoBehaviour
     {
         yield return null;
 
-        float targetTime = mainCharacter.q_startTime + mainCharacter.q_cooltime;
+        float targetTime = mainCharacter.Q_startTime + mainCharacter.Q_cooltime;
         if (Time.time > targetTime)
         {
             yield break;
         }
 
-        qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.q_currentGauge / mainCharacter.q_maxGauge;
-        qSkillUI.GetChild(1).GetComponent<Image>().color = new Color32(mainCharacter.elementColor[0], mainCharacter.elementColor[1], mainCharacter.elementColor[2], 255);
+        qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.Q_currentGauge / mainCharacter.Q_maxGauge;
+        qSkillUI.GetChild(1).GetComponent<Image>().color = new Color32(mainCharacter.ElementColor[0], mainCharacter.ElementColor[1], mainCharacter.ElementColor[2], 255);
         qSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
-        qSkillUI.GetChild(3).GetComponent<Image>().fillAmount = (targetTime - Time.time) / mainCharacter.q_cooltime;
+        qSkillUI.GetChild(3).GetComponent<Image>().fillAmount = (targetTime - Time.time) / mainCharacter.Q_cooltime;
 
         // if (mainCharacter.q_currentGauge >= mainCharacter.q_maxGauge && (Time.time > qSkillStartTIme + mainCharacter.q_cooltime || qSkillStartTIme == 0))
         // {
@@ -263,7 +263,7 @@ public class PlayerSkillController : MonoBehaviour
         }
 
         frontCamera.enabled = false;
-        GetComponent<PlayerInteraction>().playerCamera.enabled = true;
+        GetComponent<PlayerInteraction>().PlayerCamera.enabled = true;
         _input.enabled = true;
     }
 
@@ -284,13 +284,13 @@ public class PlayerSkillController : MonoBehaviour
         {
             // E Skill UI
             eSkillUI = skillUI.transform.GetChild(0);
-            if (mainCharacter.e_startTime == 0 || mainCharacter.e_startTime + mainCharacter.e_cooltime < Time.time)
+            if (mainCharacter.E_startTime == 0 || mainCharacter.E_startTime + mainCharacter.E_cooltime < Time.time)
             {
                 // E Cooltime image
                 eSkillUI.GetChild(1).GetComponent<Image>().fillAmount = 1f;
 
                 // E Cooltime sec
-                eSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.e_cooltime.ToString();
+                eSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.E_cooltime.ToString();
                 eSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 0;
             }
             else
@@ -302,14 +302,14 @@ public class PlayerSkillController : MonoBehaviour
             // Q Skill UI
             qSkillUI = skillUI.transform.GetChild(1);
 
-            if (mainCharacter.q_startTime == 0 || mainCharacter.q_startTime + mainCharacter.q_cooltime < Time.time)
+            if (mainCharacter.Q_startTime == 0 || mainCharacter.Q_startTime + mainCharacter.Q_cooltime < Time.time)
             {
                 // Q Cooltime image
-                qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.q_currentGauge / mainCharacter.q_maxGauge;
-                qSkillUI.GetChild(1).GetComponent<Image>().color = new Color32(mainCharacter.elementColor[0], mainCharacter.elementColor[1], mainCharacter.elementColor[2], 255);
+                qSkillUI.GetChild(1).GetComponent<Image>().fillAmount = mainCharacter.Q_currentGauge / mainCharacter.Q_maxGauge;
+                qSkillUI.GetChild(1).GetComponent<Image>().color = new Color32(mainCharacter.ElementColor[0], mainCharacter.ElementColor[1], mainCharacter.ElementColor[2], 255);
 
                 // Q Cooltime sec
-                qSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.e_cooltime.ToString();
+                qSkillUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.E_cooltime.ToString();
                 qSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 0;
                 qSkillUI.GetChild(5).GetComponent<CanvasGroup>().alpha = 0;
             }
@@ -326,8 +326,8 @@ public class PlayerSkillController : MonoBehaviour
             // qSkillUI.GetChild(2).GetComponent<CanvasGroup>().alpha = 0;
             // qSkillUI.GetChild(5).GetComponent<CanvasGroup>().alpha = 0;
 
-            eSkillUI.GetChild(3).GetComponent<Image>().sprite = mainCharacter.e_image;
-            qSkillUI.GetChild(4).GetComponent<Image>().sprite = mainCharacter.q_image;
+            eSkillUI.GetChild(3).GetComponent<Image>().sprite = mainCharacter.E_image;
+            qSkillUI.GetChild(4).GetComponent<Image>().sprite = mainCharacter.Q_image;
         }
 
     }

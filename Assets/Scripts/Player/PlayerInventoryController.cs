@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerInventoryController : MonoBehaviour
 {
-    public InventoryObject inventory;
-    public ItemDatabaseObject itemDatabase;
+    [SerializeField] private InventoryObject inventory;
+    public InventoryObject Inventory => inventory;
+    [SerializeField] private ItemDatabaseObject itemDatabase;
     private PlayerInteraction _playerInteraction;
     private PlayerInteractUI _interactionUI;
 

@@ -18,28 +18,33 @@ public class PlayerStateController : MonoBehaviour
     Transform playerTransform;
 
     [Header("UI")]
-    public Slider hpSlider;
-    public GameObject hpText;
-    public GameObject damageText;
+    [SerializeField] private Slider hpSlider;
+    [SerializeField] private GameObject hpText;
+    [SerializeField] private GameObject damageText;
     float damage;
-    public GameObject staminaObject;
+    [SerializeField] private GameObject staminaObject;
     private Image staminaImage;
 
     [Header("Stamina")]
     private float maxStamina = 30;
     private float currentStamina;
-    public float staminaUsePer = 3f;
-    public float staminaChargePer = 2f;
-    public bool isSprinting = false;
-    public int staminaFollowSpeed;
+    [SerializeField] private float staminaUsePer = 3f;
+    [SerializeField] private float staminaChargePer = 2f;
+    [SerializeField] private bool isSprinting = false;
+    public bool IsSprinting
+    {
+        get { return isSprinting; }
+        set { isSprinting = value; }
+    }
+    [SerializeField] private int staminaFollowSpeed;
     private Transform staminaPos;
     private Vector3 staminaVector;
     bool isSetup = false;
 
     [Header("Audio")]
-    public AudioClip PlayerHitByMonsterAudioClip;
-    public AudioClip PlayerDeadAudioClip;
-    [Range(0, 1)] public float AudioVolume = 1f;
+    [SerializeField] private AudioClip PlayerHitByMonsterAudioClip;
+    [SerializeField] private AudioClip PlayerDeadAudioClip;
+    [Range(0, 1)][SerializeField] private float AudioVolume = 1f;
 
     public enum StaminaState
     {
@@ -91,7 +96,6 @@ public class PlayerStateController : MonoBehaviour
         mainCharacter = PlayerManager.Instance.GetPlayerById(GetComponent<ObjectData>().GetId());
         _input = player.GetComponent<PlayerInput>();
         _inputManager = player.GetComponent<PlayerInputManager>();
-        Debug.Log($"{player}, {_inputManager}");
         _animator = GetComponent<Animator>();
         playerTransform = transform;
         isSetup = true;
@@ -101,16 +105,16 @@ public class PlayerStateController : MonoBehaviour
     {
         if (!isSetup) SetupPlayer();
 
-        hpText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.maxHP.ToString();
-        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.currentHP.ToString();
-        hpSlider.value = mainCharacter.currentHP / mainCharacter.maxHP;
+        hpText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mainCharacter.MaxHP.ToString();
+        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = mainCharacter.CurrentHP.ToString();
+        hpSlider.value = mainCharacter.CurrentHP / mainCharacter.MaxHP;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Monster_Weapon")
         {
-            if (mainCharacter.currentHP > 0 && !GetComponent<PlayerMovement>().GetIsDash() && !GetComponent<PlayerSkillController>().GetIsChannelingQ())
+            if (mainCharacter.CurrentHP > 0 && !GetComponent<PlayerMovement>().GetIsDash() && !GetComponent<PlayerSkillController>().GetIsChannelingQ())
             {
                 _input.enabled = true;
                 GetComponent<PlayerWeaponController>().SetWeaponCollider(false);
@@ -121,9 +125,9 @@ public class PlayerStateController : MonoBehaviour
 
     public void HealPlayer(int heal)
     {
-        mainCharacter.currentHP += heal;
-        if (mainCharacter.currentHP > mainCharacter.maxHP) mainCharacter.currentHP = mainCharacter.maxHP;
-        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ((int)mainCharacter.currentHP).ToString();
+        mainCharacter.CurrentHP += heal;
+        if (mainCharacter.CurrentHP > mainCharacter.MaxHP) mainCharacter.CurrentHP = mainCharacter.MaxHP;
+        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ((int)mainCharacter.CurrentHP).ToString();
 
         StartCoroutine(ChangeHPBar());
     }
@@ -136,20 +140,20 @@ public class PlayerStateController : MonoBehaviour
         damage = monster.gameObject.GetComponentInParent<MonsterController>().GetMonsterDamage();
         damageTextPrefeb.GetComponent<DamageTextController>().DisplayDamage(damage, false);
 
-        mainCharacter.currentHP -= damage;
-        if (mainCharacter.currentHP <= 0) mainCharacter.currentHP = 0;
+        mainCharacter.CurrentHP -= damage;
+        if (mainCharacter.CurrentHP <= 0) mainCharacter.CurrentHP = 0;
 
-        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ((int)mainCharacter.currentHP).ToString();
+        hpText.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ((int)mainCharacter.CurrentHP).ToString();
         StartCoroutine(ChangeHPBar());
 
-        if (mainCharacter.currentHP == 0) DeadPlayer();
+        if (mainCharacter.CurrentHP == 0) DeadPlayer();
         yield return new WaitForSeconds(0.5f);
     }
 
     private void DeadPlayer()
     {
         _animator.SetTrigger("Dead");
-        mainCharacter.q_currentGauge = 0;
+        mainCharacter.Q_currentGauge = 0;
         StartCoroutine(DeadPlayerCoroutine());
     }
 
@@ -159,7 +163,7 @@ public class PlayerStateController : MonoBehaviour
         while (timer < 0.5f)
         {
             timer += Time.deltaTime;
-            hpSlider.value = Mathf.Lerp(hpSlider.value, mainCharacter.currentHP / mainCharacter.maxHP, timer / 0.5f);
+            hpSlider.value = Mathf.Lerp(hpSlider.value, mainCharacter.CurrentHP / mainCharacter.MaxHP, timer / 0.5f);
             yield return null;
         }
         yield return null;
@@ -177,12 +181,12 @@ public class PlayerStateController : MonoBehaviour
         List<PlayableCharacter> partyPlayers = PlayerManager.Instance.GetPartyPlayers();
         for (int i = 0; i < partyPlayers.Count; i++)
         {
-            if (partyPlayers[i].id == mainCharacter.id) continue;
-            if (partyPlayers[i].currentHP > 0)
+            if (partyPlayers[i].Id == mainCharacter.Id) continue;
+            if (partyPlayers[i].CurrentHP > 0)
             {
                 // PlayerManager.Instance._playerSwapController.currentPlayerIndex = partyPlayers[i].id;
 
-                _inputManager.swap = partyPlayers[i].id;
+                _inputManager.swap = partyPlayers[i].Id;
                 allDeadFlag = true;
                 _input.enabled = true;
                 yield break;
@@ -193,7 +197,7 @@ public class PlayerStateController : MonoBehaviour
         // Dead all
         if (!allDeadFlag)
         {
-            PlayerManager.Instance.isAlive = false;
+            PlayerManager.Instance.IsAlive = false;
             PlayerManager.Instance.PlayerDeadToMenu();
         }
 

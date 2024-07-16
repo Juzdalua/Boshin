@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class DisplayInventory : MonoBehaviour
 {
-    public InventoryObject inventory;
-    public GameObject inventoryPrefab;
-    public GameObject itemDetail;
-    public GameObject addUseItemUI;
-    public GameObject equipItemUI;
-    public GameObject characterUseItemUI;
+    [SerializeField] private InventoryObject inventory;
+    [SerializeField] private GameObject inventoryPrefab;
+    [SerializeField] private GameObject itemDetail;
+    [SerializeField] private GameObject addUseItemUI;
+    [SerializeField] private GameObject equipItemUI;
+    [SerializeField] private GameObject characterUseItemUI;
     Transform useItemAmountUI;
     PlayerWeaponController _weaponController;
 
-    public int X_START = -500;
-    public int Y_START = 390;
-    public int X_PADDING = 220;
-    public int Y_PADDING = 220;
-    public int NUMBER_OF_COLUMN = 5;
+    [SerializeField] private int X_START = -500;
+    [SerializeField] private int Y_START = 390;
+    [SerializeField] private int X_PADDING = 220;
+    [SerializeField] private int Y_PADDING = 220;
+    [SerializeField] private int NUMBER_OF_COLUMN = 5;
     Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
 
     void Start()
@@ -68,7 +68,7 @@ public class DisplayInventory : MonoBehaviour
             else
             {
                 GameObject obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
-                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.GetItemById(slot.item.id).itemImage;
+                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.GetItemById(slot.item.Id).ItemImage;
                 obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
                 obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
 
@@ -92,22 +92,22 @@ public class DisplayInventory : MonoBehaviour
         int itemId = itemObject.GetComponent<ObjectData>().GetId();
         var item = inventory.GetItemById(itemId);
 
-        itemDetail.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = item.itemImage;
-        itemDetail.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = item.desctiption;
+        itemDetail.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = item.ItemImage;
+        itemDetail.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = item.Desctiption;
 
-        if (item.canUse)
+        if (item.CanUse)
         {
             addUseItemUI.SetActive(true);
             addUseItemUI.GetComponent<Button>().onClick.AddListener(() => AddUseItemUI(itemId));
             equipItemUI.SetActive(false);
         }
-        else if (item.canEquip)
+        else if (item.CanEquip)
         {
             equipItemUI.SetActive(true);
             addUseItemUI.SetActive(false);
 
             _weaponController = PlayerManager.Instance.GetActivePlayer().GetComponent<PlayerWeaponController>();
-            if (item.id == _weaponController.GetWeaponInfo().id)
+            if (item.Id == _weaponController.GetWeaponInfo().Id)
             {
                 equipItemUI.GetComponentInChildren<TextMeshProUGUI>().text = "장착중";
             }
@@ -135,7 +135,7 @@ public class DisplayInventory : MonoBehaviour
         {
             characterUseItemUI.GetComponent<ObjectData>().SetId(itemId);
 
-            characterUseItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().sprite = item.itemImage;
+            characterUseItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().sprite = item.ItemImage;
             characterUseItemUI.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = new Color32(255, 255, 255, 255);
             useItemAmountUI.gameObject.SetActive(true);
             characterUseItemUI.transform.GetChild(0).GetChild(4).GetComponentInChildren<TextMeshProUGUI>().text = playerItem.amount.ToString("n0");
@@ -148,7 +148,7 @@ public class DisplayInventory : MonoBehaviour
         if (item == null) return;
 
         ItemWeaponObject activeWeapon = _weaponController.GetWeaponInfo();
-        if (itemId == activeWeapon.id) return;
+        if (itemId == activeWeapon.Id) return;
 
         InventorySlot playerItem = inventory.GetPlayerItemById(itemId);
         if (playerItem.amount <= 0) return;
